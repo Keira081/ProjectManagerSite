@@ -3,24 +3,17 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="flex items-center justify-between w-[100%] bg-purple-100 dark:bg-purple-600">
+    <div className="flex items-center justify-between h-10 w-[100%] bg-purple-100 dark:bg-purple-600">
       {/* LOGO */}
-      <div className="flex justify-center items-center h-[48px] w-[48px] bg-purple-300 dark:bg-purple-500">
+      <div className="flex justify-center items-center h-[40px] w-[40px] bg-purple-300 dark:bg-purple-500">
         <h1 className="relative right-[2px] bottom-[2px] text-3xl font-bold italic text-white">
           K
         </h1>
       </div>
 
-      {/* TITTLE */}
-      <div className="flex justify-center w-[100%]">
-        <h1 className="text-2xl font-bold italic text-purple-700 dark:text-white">
-          . PM_____Site .
-        </h1>
-      </div>
-
       {/* LIGHT/DARK MODE */}
-      <button className="rounded mr-3 p-2 cursor-pointer hover:bg-purple-50">
-        <Moon className="h-6 w-6 dark:text-white" />
+      <button className="rounded-full mr-3 p-2 cursor-pointer hover:bg-purple-50">
+        <Moon className="h-4 w-4 dark:text-white" />
       </button>
     </div>
   );
