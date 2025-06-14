@@ -1,15 +1,26 @@
 "use client";
 import { ChevronDown, ChevronUp, Search, X } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/states/hooks";
+import { setIsShowGroups, setIsSidebarCollapsed } from "@/states/slices";
 
 const Sidebar = () => {
-  const [showGroups, setShowGroups] = useState(true);
+  const dispatch = useAppDispatch();
+  const isShowGroups = useAppSelector((state) => state.global.isShowGroups);
 
+  const isSidebarCollapsed = useAppSelector(
+    (state) => state.global.isSidebarCollapsed
+  );
   return (
     <div
-      className={`fixed top-0 flex flex-col h-full w-60 shadow-xl/60 shadow-purple-700 overflow-y-auto bg-gray-50 dark:bg-purple-400 dark:shadow-black`}
+      className={`z-1 fixed bottom-0 flex flex-col w-60 transition-all duration-500 ease-in-out
+        ${
+          isSidebarCollapsed
+            ? "h-[40px] bg-gray-100 dark:bg-purple-400"
+            : "h-full overflow-y-auto shadow-xl/60 shadow-purple-700 bg-gray-50 dark:bg-purple-400 dark:shadow-black"
+        }`}
     >
       <div className="h-10 flex items-center justify-between border-b border-purple-700">
         {/* LOGO */}
@@ -17,8 +28,17 @@ const Sidebar = () => {
           KSTACK
         </h1>
         {/* COLLAPSE BUTTON */}
-        <button className="pr-3 cursor-pointer">
-          <X className="h-4 w-4 text-purple-700 dark:text-white" />
+        <button
+          onClick={() => {
+            dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
+          }}
+          className="pr-3 cursor-pointer"
+        >
+          {isSidebarCollapsed ? (
+            <ChevronUp className="h-4 w-4 text-purple-700 dark:text-white" />
+          ) : (
+            <ChevronDown className="h-4 w-4 text-purple-700 dark:text-white" />
+          )}
         </button>
       </div>
 
@@ -39,20 +59,20 @@ const Sidebar = () => {
 
         {/* GROUPS */}
         <button
-          onClick={() => setShowGroups(!showGroups)}
-          className={`flex justify-between items-center cursor-pointer px-6 ${showGroups ? "" : "mb-1"} text-purple-300 hover:bg-gray-100 dark:text-purple-100 hover:dark:bg-purple-300`}
+          onClick={() => dispatch(setIsShowGroups(!isShowGroups))}
+          className={`flex justify-between items-center cursor-pointer px-6 ${isShowGroups ? "" : "mb-1"} text-purple-300 hover:bg-gray-100 dark:text-purple-100 hover:dark:bg-purple-300`}
         >
           <h2 className=" text-xl text-medium tracking-widest font-bold">
             Groups
           </h2>
-          {showGroups ? (
+          {isShowGroups ? (
             <ChevronUp className="h-5 w-5" />
           ) : (
             <ChevronDown className="h-5 w-5" />
           )}
         </button>
 
-        <div className={`mb-2 ${showGroups ? "" : "hidden"}`}>
+        <div className={`mb-2 ${isShowGroups ? "" : "hidden"}`}>
           <NavLink title="Create a Group" href="/createGroup" />
           {/* if empty <p>No groups created yet...</p> */}
         </div>
