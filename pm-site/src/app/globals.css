@@ -20,6 +20,6 @@
 }
 
 body {
-  @apply bg-white;
+  @apply bg-gray-50;
   @apply dark:bg-purple-500;
 }

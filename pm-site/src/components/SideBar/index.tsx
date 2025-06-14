@@ -3,8 +3,8 @@ import { ChevronDown, ChevronUp, Search, X } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { setIsShowGroups, setIsSidebarCollapsed } from "@/states/slices";
+import { useAppDispatch, useAppSelector } from "@/states/store";
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ const Sidebar = () => {
         ${
           isSidebarCollapsed
             ? "h-[40px] bg-gray-100 dark:bg-purple-400"
-            : "h-full overflow-y-auto shadow-xl/60 shadow-purple-700 bg-gray-50 dark:bg-purple-400 dark:shadow-black"
+            : "h-full shadow-xl/60 shadow-purple-700 bg-gray-50 dark:bg-purple-400 dark:shadow-black"
         }`}
     >
       <div className="h-10 flex items-center justify-between border-b border-purple-700">
@@ -49,7 +49,7 @@ const Sidebar = () => {
       </div>
 
       {/* NAVBAR LINKS */}
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-y-auto">
         {/* PROJECTS */}
         <SidebarHeader title="PROJECTS" />
         <div className="mb-2">

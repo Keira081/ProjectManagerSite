@@ -1,6 +1,6 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { setIsDarkMode } from "@/states/slices";
+import { useAppDispatch, useAppSelector } from "@/states/store";
 import { Moon, Sun } from "lucide-react";
 import React from "react";
 
@@ -32,5 +32,4 @@ const Header = () => {
     </div>
   );
 };
-// The title is in the middle of the LOGO and the moon, I want it's div to fill 100% of the spacethat's between the it and the logo and the moon but h-100% in it's class name isnt working (I'm using TailwindCSS)
 export default Header;

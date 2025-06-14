@@ -1,7 +1,7 @@
 "use client";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { useAppSelector } from "@/states/hooks";
+import { useAppSelector } from "@/states/store";
 import React, { useEffect } from "react";
 
 const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
