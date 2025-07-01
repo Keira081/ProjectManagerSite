@@ -1,0 +1,102 @@
+[
+  {
+    "id": 0,
+    "startDate": "",
+    "creationDate": "",
+    "dueDate": "",
+    "dateFinished": "",
+    "name": "",
+    "description": "",
+    "status": ""
+  },
+  {
+    "id": 1,
+    "name": "Apollo",
+    "description": "A space exploration project.",
+    "creationDate": "2025-02-01T00:00:00Z",
+    "startDate": "2025-02-10T00:00:00Z",
+    "dueDate": "2025-12-30T00:00:00Z",
+    "dateFinished": "2025-12-31T00:00:00Z",
+    "status": "completed"
+  },
+  {
+    "id": 2,
+    "name": "Beacon",
+    "description": "Developing advanced navigation systems.",
+    "creationDate": "2025-02-01T00:00:00Z",
+    "startDate": "2025-02-01T00:00:00Z",
+    "dueDate": "2025-10-15T00:00:00Z",
+    "dateFinished": "2025-10-10T00:00:00Z",
+    "status": "completed"
+  },
+  {
+    "id": 3,
+    "name": "Catalyst",
+    "description": "A project to boost renewable energy use.",
+    "creationDate": "2025-03-05T00:00:00Z",
+    "startDate": "2025-08-05T00:00:00Z",
+    "dueDate": "2026-10-05T00:00:00Z",
+    "status": "To do"
+  },
+  {
+    "id": 4,
+    "name": "Delta",
+    "description": "Delta project for new software development techniques.",
+    "creationDate": "2025-06-20T00:00:00Z",
+    "startDate": "2025-06-20T00:00:00Z",
+    "dueDate": "2025-09-20T00:00:00Z",
+    "status": "in-progress"
+  },
+  {
+    "id": 5,
+    "name": "Echo",
+    "description": "Echo project focused on AI advancements.",
+    "creationDate": "2025-04-15T00:00:00Z",
+    "startDate": "2025-06-15T00:00:00Z",
+    "datePostponed": "2025-07-01T00:00:00Z",
+    "status": "postponed"
+  },
+  {
+    "id": 6,
+    "name": "Foxtrot",
+    "description": "Exploring cutting-edge biotechnology.",
+    "creationDate": "2025-02-25T00:00:00Z",
+    "startDate": "2025-08-25T00:00:00Z",
+    "dueDate": "2025-08-26T00:00:00Z",
+    "dateFinished": "2025-08-26T00:00:00Z",
+    "status": "completed"
+  },
+  {
+    "id": 7,
+    "name": "Golf",
+    "description": "Development of new golf equipment using AI.",
+    "creationDate": "2025-05-10T00:00:00Z",
+    "startDate": "2025-05-10T00:00:00Z",
+    "dueDate": "2025-12-10T00:00:00Z",
+    "status": "in-progress"
+  },
+  {
+    "id": 8,
+    "name": "Hotel",
+    "description": "Hotel management system overhaul.",
+    "creationDate": "2025-03-01T00:00:00Z"
+  },
+  {
+    "id": 9,
+    "name": "India",
+    "description": "Telecommunication infrastructure upgrade.",
+    "creationDate": "2025-06-01T00:00:00Z",
+    "startDate": "2025-06-01T00:00:00Z",
+    "dueDate": "2025-12-01T00:00:00Z",
+    "status": "in-progress"
+  },
+  {
+    "id": 10,
+    "name": "Juliet",
+    "description": "Initiative to enhance cyber-security measures.",
+    "creationDate": "2025-07-01T00:00:00Z",
+    "startDate": "2025-07-01T00:00:00Z",
+    "datePostponed": "2025-07-30T00:00:00",
+    "status": "postponed"
+  }
+]

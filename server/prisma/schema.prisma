@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  //field          type     gives an id field in our user table that is a primary key that also autoincrements
+  userId            Int     @id @default(autoincrement())
+  cognitoId         String  @unique
+  username          String  @unique
+  profilePictureUrl String?
+  teamId            Int?
+  authoredTasks   Task[]           @relation("TaskAuthor")
+  assignedTasks   Task[]           @relation("TaskAssignee")
+  taskAssignments TaskAssignment[]
+  attachments     Attachment[]
+  //              a feild that has all the user's comments, refers to the Comment model
+  comments        Comment[]
+  team            Team?            @relation(fields: [teamId], references: [id])
+}
+
+model Team {
+  id                   Int           @id @default(autoincrement())
+  teamName             String
+  teamOwnerUserId      Int?
+  projectTeams         ProjectTeam[]
+  user                 User[]
+}
+
+model Project {
+  id           Int           @id @default(autoincrement())
+  name         String
+  description  String?
+  creationDate String
+  startDate    DateTime?
+  dueDate      DateTime?
+  dateFinished DateTime?
+  status       String?
+  tasks        Task[]
+  projectTeams ProjectTeam[]
+  attachment   Attachment[]
+  projectAssignment ProjectAssignment[]
+}
+
+model ProjectAssignment {
+  id     Int @id @default(autoincrement())
+  projectId Int
+  groupId Int
+
+  project Project @relation(fields: [projectId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+}
+
+model ProjectTeam {
+  id        Int     @id @default(autoincrement())
+  teamId    Int
+  projectId Int
+  team      Team    @relation(fields: [teamId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Task {
+  id             Int       @id @default(autoincrement())
+  name           String
+  description    String?
+  status         String?
+  priority       String?
+  tags           String?
+  creationDate   DateTime
+  startDate      DateTime?
+  dueDate        DateTime?
+  dateFinished   DateTime?
+  projectId      Int
+  authorUserId   Int
+  assignedUserId Int?
+  points         Int?
+
+  project         Project          @relation(fields: [projectId], references: [id])
+  author          User             @relation("TaskAuthor", fields: [authorUserId], references: [userId])
+  assignee        User?            @relation("TaskAssignee", fields: [assignedUserId], references: [userId])
+  taskAssignments TaskAssignment[]
+  attachments     Attachment[]
+  comments        Comment[]
+}
+
+model TaskAssignment {
+  id     Int @id @default(autoincrement())
+  userId Int
+  taskId Int
+
+  user User @relation(fields: [userId], references: [userId])
+  task Task @relation(fields: [taskId], references: [id])
+}
+
+model Group {
+  id Int @id @default(autoincrement())
+  name String
+
+  projectAssignments ProjectAssignment[]
+}
+
+model Attachment {
+  id           Int     @id @default(autoincrement())
+  fileURL      String
+  fileName     String?
+  taskId       Int?
+  projectId    Int?
+  uploadedById Int
+
+  task       Task? @relation(fields: [taskId], references: [id])
+  project    Project? @relation(fields: [projectId], references: [id])
+  uploadedBy User @relation(fields: [uploadedById], references: [userId])
+}
+
+model Comment {
+  id     Int    @id @default(autoincrement())
+  text   String
+  taskId Int
+  userId Int
+  //        Creating the relationship
+  task Task @relation(fields: [taskId], references: [id])
+  //                  The taskId of this Comment model is smae as the id value in the Task model
+  user User @relation(fields: [userId], references: [userId])
+} 
+
