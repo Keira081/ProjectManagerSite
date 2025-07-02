@@ -1,4 +1,5 @@
 "use client";
+//Cant put "use client" in layout.tsx -> creating an additionally wrapper
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { useAppSelector } from "@/states/store";

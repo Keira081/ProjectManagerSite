@@ -45,17 +45,17 @@ model Project {
   startDate    DateTime?
   dueDate      DateTime?
   dateFinished DateTime?
+  datePostponed DateTime?
   status       String?
   tasks        Task[]
   projectTeams ProjectTeam[]
-  attachment   Attachment[]
   projectAssignment ProjectAssignment[]
 }
 
 model ProjectAssignment {
-  id     Int @id @default(autoincrement())
+  id        Int @id @default(autoincrement())
   projectId Int
-  groupId Int
+  groupId   Int
 
   project Project @relation(fields: [projectId], references: [id])
   group Group @relation(fields: [groupId], references: [id])
@@ -80,6 +80,7 @@ model Task {
   startDate      DateTime?
   dueDate        DateTime?
   dateFinished   DateTime?
+  datePostponed DateTime?
   projectId      Int
   authorUserId   Int
   assignedUserId Int?
@@ -103,7 +104,7 @@ model TaskAssignment {
 }
 
 model Group {
-  id Int @id @default(autoincrement())
+  id   Int     @id @default(autoincrement())
   name String
 
   projectAssignments ProjectAssignment[]
@@ -113,12 +114,10 @@ model Attachment {
   id           Int     @id @default(autoincrement())
   fileURL      String
   fileName     String?
-  taskId       Int?
-  projectId    Int?
+  taskId       Int
   uploadedById Int
 
-  task       Task? @relation(fields: [taskId], references: [id])
-  project    Project? @relation(fields: [projectId], references: [id])
+  task       Task @relation(fields: [taskId], references: [id])
   uploadedBy User @relation(fields: [uploadedById], references: [userId])
 }
 

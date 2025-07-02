@@ -4,5 +4,5 @@
   { "id": 3, "projectId": 3, "groupId": 1 },
   { "id": 4, "projectId": 4, "groupId": 2 },
   { "id": 5, "projectId": 5, "groupId": 2 },
-  { "id": 5, "projectId": 6, "groupId": 2 }
+  { "id": 6, "projectId": 6, "groupId": 2 }
 ]

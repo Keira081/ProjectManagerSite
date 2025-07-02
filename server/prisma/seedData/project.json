@@ -1,15 +1,5 @@
 [
   {
-    "id": 0,
-    "startDate": "",
-    "creationDate": "",
-    "dueDate": "",
-    "dateFinished": "",
-    "name": "",
-    "description": "",
-    "status": ""
-  },
-  {
     "id": 1,
     "name": "Apollo",
     "description": "A space exploration project.",
@@ -96,7 +86,7 @@
     "description": "Initiative to enhance cyber-security measures.",
     "creationDate": "2025-07-01T00:00:00Z",
     "startDate": "2025-07-01T00:00:00Z",
-    "datePostponed": "2025-07-30T00:00:00",
+    "datePostponed": "2025-07-30T00:00:00Z",
     "status": "postponed"
   }
 ]
