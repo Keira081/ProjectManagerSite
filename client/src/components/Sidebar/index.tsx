@@ -1,97 +1,134 @@
 "use client";
-import { ChevronDown, ChevronUp, Search, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  LucideIcon,
+  PencilLine,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  X,
+} from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { setIsShowGroups, setIsSidebarCollapsed } from "@/states/slices";
+import { setIsShowProjects, setIsSidebarCollapsed } from "@/states/slices";
 import { useAppDispatch, useAppSelector } from "@/states/store";
+import { useGetProjectsQuery } from "@/states/api";
 
 const Sidebar = () => {
+  const { data: projects } = useGetProjectsQuery();
+  const query = useGetProjectsQuery();
+  console.log(query);
+
   const dispatch = useAppDispatch();
-  const isShowGroups = useAppSelector((state) => state.global.isShowGroups);
+  const isShowProjects = useAppSelector((state) => state.global.isShowProjects);
 
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
   return (
     <div
-      className={`z-1 fixed bottom-0 flex flex-col w-60 transition-all duration-500 ease-in-out
-        ${
-          isSidebarCollapsed
-            ? "h-[40px] bg-gray-100 dark:bg-purple-400"
-            : "h-full shadow-xl/60 shadow-purple-700 bg-gray-50 dark:bg-purple-400 dark:shadow-black"
-        }`}
+      className={`fixed top-10 left-0 z-10 transition-all duration-500 ease-in-out h-full 
+    ${isSidebarCollapsed ? "w-0  top-0" : "w-60 "}
+    bg-gray-50 shadow-xl dark:bg-purple-400 dark:shadow-black`}
     >
-      <div className="h-10 flex items-center justify-between border-b border-purple-700">
-        {/* LOGO */}
-        <h1 className="p-2 text- italic text-purple-700 dark:text-white dark:border-white">
-          KSTACK
-        </h1>
-        {/* COLLAPSE BUTTON */}
-        <button
-          onClick={() => {
-            dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
-          }}
-          className="pr-3 cursor-pointer"
-        >
-          {isSidebarCollapsed ? (
-            <ChevronUp className="h-4 w-4 text-purple-700 dark:text-white" />
-          ) : (
-            <ChevronDown className="h-4 w-4 text-purple-700 dark:text-white" />
-          )}
-        </button>
-      </div>
+      {/* COLLAPSE BUTTON CENTERED VERTICALLY */}
+      <button
+        onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
+        className="shadow-[2px_0_3px_rgba(0,0,0,0.1)] absolute top-1/2 -translate-y-1/2 left-full -translate-x-[1px] w-6 h-10 flex items-center justify-center z-20 rounded-r-lg bg-gray-50 dark:bg-purple-400 hover:bg-gray-100 dark:hover:bg-purple-200"
+      >
+        {isSidebarCollapsed ? (
+          <ChevronRight className="h-5 w-5 text-purple-700 dark:text-white" />
+        ) : (
+          <ChevronLeft className="h-5 w-5 text-purple-700 dark:text-white" />
+        )}
+      </button>
 
-      {/* SEARCH BAR */}
-      <div className="flex justify-center items-center text-purple-700 m-4 border border-purple-700 bg-white dark:bg-purple-100">
-        <input type="text" placeholder="Search..." />
-        <Search className="w-[15px] h-[15px]" />
-      </div>
+      {/* LOGO */}
+      {!isSidebarCollapsed && (
+        <div className="h-10 flex items-center justify-between border-b border-purple-700 px-2">
+          <h1 className="text- italic text-purple-700 dark:text-white">
+            KSTACK
+          </h1>
+        </div>
+      )}
 
-      {/* NAVBAR LINKS */}
-      <div className="flex flex-col overflow-y-auto">
-        {/* PROJECTS */}
+      {/* CONTENT WRAPPER */}
+      <div
+        className={`
+    transition-all duration-500 ease-in-out overflow-y-auto
+    ${isSidebarCollapsed ? "opacity-0 pointer-events-none" : "opacity-100"}
+    flex flex-col
+  `}
+      >
+        {" "}
+        {/* SEARCH BAR */}
+        <div className="flex justify-center items-center text-purple-700 m-4 border border-purple-700 bg-white dark:bg-purple-100">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="bg-transparent outline-none"
+          />
+          <Search className="w-[15px] h-[15px]" />
+        </div>
+        {/* NAVBAR LINKS */}
         <SidebarHeader title="PROJECTS" />
         <div className="mb-2">
-          <NavLink title="Create Projects" href="/createProj" />
+          <NavLink
+            title="+ Create Projects"
+            href="/createProj"
+            textClassName="font-semibold"
+          />
           <NavLink title="All Projects" href="/allProjs" />
         </div>
-
-        {/* GROUPS */}
+        {/* ALL PROJECTS */}
         <button
-          onClick={() => dispatch(setIsShowGroups(!isShowGroups))}
-          className={`flex justify-between items-center cursor-pointer px-6 ${isShowGroups ? "" : "mb-1"} text-purple-300 hover:bg-gray-100 dark:text-purple-100 hover:dark:bg-purple-300`}
+          onClick={() => dispatch(setIsShowProjects(!isShowProjects))}
+          className={`flex justify-between items-center cursor-pointer px-6 ${isShowProjects ? "" : "mb-1"} text-purple-300 hover:bg-gray-100 dark:text-purple-100 hover:dark:bg-purple-300`}
         >
-          <h2 className=" text-xl text-medium tracking-widest font-bold">
-            Groups
-          </h2>
-          {isShowGroups ? (
+          <h2 className="text-xl tracking-widest font-bold">All Projects</h2>
+          {isShowProjects ? (
             <ChevronUp className="h-5 w-5" />
           ) : (
             <ChevronDown className="h-5 w-5" />
           )}
         </button>
+        <div
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${
+            isShowProjects
+              ? "max-h-96 opacity-100 translate-y-0"
+              : "max-h-0 opacity-0 -translate-y-2"
+          }`}
+        >
+          <div className="mb-2">
+            <NavLink
+              title="+ Create a Group"
+              href="/createGroup"
+              textClassName="font-semibold"
+            />
+          </div>
 
-        <div className={`mb-2 ${isShowGroups ? "" : "hidden"}`}>
-          <NavLink title="Create a Group" href="/createGroup" />
-          {/* if empty <p>No groups created yet...</p> */}
+          {projects?.map((project) => (
+            <NavLink
+              key={project.id}
+              title={project.name}
+              icon={PencilLine}
+              href={`/projects/${project.id}`}
+            />
+          ))}
         </div>
-
         {/* TASKS */}
         <SidebarHeader title="TASKS" />
         <div className="mb-2">
           <NavLink title="All Tasks" href="/allTasks" />
         </div>
-
         {/* TEAMS */}
         <SidebarHeader title="TEAMS" />
         <div className="mb-2">
           <NavLink title="Build Your Team" href="/buildTeam" />
-          {/* if empty <p>No teams created yet...</p> */}
         </div>
       </div>
-
-      {/* LOGO */}
     </div>
   );
 };
@@ -114,21 +151,33 @@ const SidebarHeader = ({ title, extraStyles }: SidebarHeaderProps) => {
 interface NavLinkProps {
   title: string;
   href: string;
+  icon?: LucideIcon;
+  textClassName?: string; // add this
 }
 
-const NavLink = ({ title, href }: NavLinkProps) => {
+const NavLink = ({
+  title,
+  href,
+  icon: Icon,
+  textClassName = "font-light",
+}: NavLinkProps) => {
   const currentPath = usePathname();
   const isSelected = href === currentPath;
+
   return (
     <Link href={href}>
       <div
-        className={`p-[2px] ${isSelected ? "inset-shadow-sm/20 bg-gray-200 dark:bg-purple-250" : "hover:bg-gray-100 hover:dark:bg-purple-300"}`}
+        className={`ml-8 flex items-center gap-3 p-[2px] ${
+          isSelected
+            ? "inset-shadow-sm/20 bg-gray-200 dark:bg-purple-250"
+            : "hover:bg-gray-100 hover:dark:bg-purple-300"
+        }`}
       >
-        <p className="ml-[45px] font-light text-black dark:text-white">
-          {title}
-        </p>
+        {Icon && <Icon className="h-4 w-4 text-gray-800 dark:text-gray-100" />}
+        <p className={`${textClassName} text-black dark:text-white`}>{title}</p>
       </div>
     </Link>
   );
 };
+
 export default Sidebar;

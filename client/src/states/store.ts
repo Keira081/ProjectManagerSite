@@ -1,12 +1,14 @@
+
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { globalSlice } from "./slices";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-
+import { api } from "@/states/api";
 //Will hold all reducers/slices
 const rootReducer = combineReducers({
   global: globalSlice.reducer,
+  [api.reducerPath]: api.reducer,
 });
 
 const persistConfig = {
@@ -23,7 +25,7 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
-      }),
+      }).concat(api.middleware), //enables caching, invalidation, ect. features that the RTK libray has,
   });
 };
 

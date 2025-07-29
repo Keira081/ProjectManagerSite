@@ -1,3 +1,4 @@
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -47,6 +48,7 @@ model Project {
   dateFinished DateTime?
   datePostponed DateTime?
   status       String?
+  
   tasks        Task[]
   projectTeams ProjectTeam[]
   projectAssignment ProjectAssignment[]
@@ -131,4 +133,3 @@ model Comment {
   //                  The taskId of this Comment model is smae as the id value in the Task model
   user User @relation(fields: [userId], references: [userId])
 } 
-
