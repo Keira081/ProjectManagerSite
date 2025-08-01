@@ -19,16 +19,11 @@ export const getTasks = async (req: Request, res: Response) => {
     });
     res.json(allTasks);
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: `Error retrieving tasks: ${error}` });
+    res.status(500).json({ message: `Error retrieving tasks: ${error}` });
   }
 };
 
-export const createTask = async (
-  req: Request,
-  res: Response
-) => {
+export const createTask = async (req: Request, res: Response) => {
   const {
     name,
     description,
@@ -66,16 +61,11 @@ export const createTask = async (
     });
     res.status(201).json(newTask);
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: `Error creating a task: ${error}` });
+    res.status(500).json({ message: `Error creating a task: ${error}` });
   }
 };
 
-export const updateTaskStatus = async (
-  req: Request,
-  res: Response
-) => {
+export const updateTaskStatus = async (req: Request, res: Response) => {
   const { taskId } = req.params;
   const { status } = req.body;
   try {

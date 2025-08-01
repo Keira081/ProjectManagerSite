@@ -75,8 +75,13 @@ export interface Task {
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    baseUrl: "http://localhost:8000",
+    prepareHeaders: (headers) => {
+      console.log("BASE URL:", process.env.NEXT_PUBLIC_API_BASE_URL);
+      return headers;
+    },
   }),
+
   reducerPath: "api",
   tagTypes: ["Projects", "Tasks", "Groups"], //point of tags and invalidating or providng them
   endpoints: (build) => ({
@@ -93,6 +98,10 @@ export const api = createApi({
         body: project,
       }),
       invalidatesTags: ["Projects"],
+    }),
+    getProjectById: build.query<Project, { id: number }>({
+      query: ({ id }) => `/projects?id=${id}`,
+      providesTags: ["Projects"],
     }),
     //TASK ENDPOINTS
     getTasks: build.query<Task[], { projectId: number }>({
@@ -127,6 +136,7 @@ export const api = createApi({
 
 export const {
   useGetProjectsQuery, //"Query" is associated with GET commands
+  useGetProjectByIdQuery,
   useCreateProjectMutation, //"Mutation" is associated with POST commands...and I assume any command that changes the data in some way
   useGetTasksQuery,
   useCreateTaskMutation,
