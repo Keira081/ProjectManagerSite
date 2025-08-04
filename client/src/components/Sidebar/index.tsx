@@ -29,7 +29,7 @@ const Sidebar = () => {
   );
   return (
     <div
-      className={`fixed top-10 left-0 z-10 transition-all duration-500 ease-in-out h-full 
+      className={`fixed top-0 left-0 z-10 transition-all duration-500 ease-in-out h-full 
     ${isSidebarCollapsed ? "w-0  top-0" : "w-60 "}
     bg-gray-50 shadow-xl dark:bg-purple-400 dark:shadow-black`}
     >
@@ -45,15 +45,6 @@ const Sidebar = () => {
         )}
       </button>
 
-      {/* LOGO */}
-      {!isSidebarCollapsed && (
-        <div className="h-10 flex items-center justify-between border-b border-purple-700 px-2">
-          <h1 className="text- italic text-purple-700 dark:text-white">
-            KSTACK
-          </h1>
-        </div>
-      )}
-
       {/* CONTENT WRAPPER */}
       <div
         className={`
@@ -62,7 +53,14 @@ const Sidebar = () => {
     flex flex-col
   `}
       >
-        {" "}
+        {/* LOGO */}
+
+        <div className="h-10 flex items-center justify-between border-b border-purple-700 px-2">
+          <h1 className="text- italic text-purple-700 dark:text-white">
+            KSTACK
+          </h1>
+        </div>
+
         {/* SEARCH BAR */}
         <div className="flex justify-center items-center text-purple-700 m-4 border border-purple-700 bg-white dark:bg-purple-100">
           <input

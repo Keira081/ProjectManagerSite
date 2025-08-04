@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ProjectHeader from "@/app/projects/ProjectHeader";
 // import { useGetProjectByIdQuery } from "@/states/api";
 import { useParams } from "next/navigation";
-
+import Board from "../BoardView";
 const Project = () => {
   const { id } = useParams();
   const projectId = Number(id);
@@ -22,16 +22,16 @@ const Project = () => {
         onClose={() => setIsModalNewTaskOpen(false)}
         id={id}
       /> */}
+
       <ProjectHeader
         projectId={projectId}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-      {/* <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === "Board" && (
-        <Board id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
+        <Board id={projectId} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
       )}
-      {activeTab === "List" && (
+      {/* {activeTab === "List" && (
         <List id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
       )}
       {activeTab === "Timeline" && (

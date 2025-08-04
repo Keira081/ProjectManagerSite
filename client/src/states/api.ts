@@ -120,7 +120,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
-    updateTaskStatus: build.mutation<Task, { taskId: number; status: number }>({
+    updateTaskStatus: build.mutation<Task, { taskId: number; status: string }>({
       query: ({ taskId, status }) => ({
         //needed to place vars in {} to work
         url: `/tasks/${taskId}/status`,
@@ -140,4 +140,5 @@ export const {
   useCreateProjectMutation, //"Mutation" is associated with POST commands...and I assume any command that changes the data in some way
   useGetTasksQuery,
   useCreateTaskMutation,
+  useUpdateTaskStatusMutation,
 } = api;
