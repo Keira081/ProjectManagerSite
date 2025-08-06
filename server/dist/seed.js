@@ -49,7 +49,19 @@ function main() {
             "comment.json",
             "taskAssignment.json",
         ];
-        yield deleteAllData(orderedFileNames);
+        const DeleteorderedFileNames = [
+            "projectTeam.json",
+            "team.json",
+            "projectAssignment.json",
+            "taskAssignment.json",
+            "attachment.json",
+            "group.json",
+            "comment.json",
+            "task.json",
+            "user.json",
+            "project.json",
+        ];
+        yield deleteAllData(DeleteorderedFileNames);
         for (const fileName of orderedFileNames) {
             const filePath = path_1.default.join(dataDirectory, fileName);
             const jsonData = JSON.parse(fs_1.default.readFileSync(filePath, "utf-8"));

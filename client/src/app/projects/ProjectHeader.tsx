@@ -1,4 +1,5 @@
 import { useGetProjectByIdQuery, useGetProjectsQuery } from "@/states/api";
+import { format } from "date-fns";
 import {
   CalendarDays,
   EllipsisVertical,
@@ -9,6 +10,8 @@ import {
 } from "lucide-react";
 import React from "react";
 import { useState } from "react";
+import colors from "tailwindcss/colors";
+
 type Props = {
   projectId: number;
   activeTab: string;
@@ -18,14 +21,18 @@ type Props = {
 const tabOptions = [
   { name: "Description", icon: <Pencil className="h-5 w-5" /> },
   { name: "Board", icon: <Table2 className="h-5 w-5" /> },
-  { name: "Calendar", icon: <CalendarDays className="h-5 w-5" /> },
-  { name: "List", icon: <List className="h-5 w-5" /> },
+  { name: "Timeline", icon: <CalendarDays className="h-5 w-5" /> },
+  { name: "Table", icon: <List className="h-5 w-5" /> },
 ];
 
 const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data: project } = useGetProjectByIdQuery({ id: projectId });
   const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState(false);
+
+  const formattedCreationDate = project?.creationDate
+    ? format(new Date(project.creationDate), "P")
+    : "";
 
   const renderTabButton = (tab: (typeof tabOptions)[0], isDropdown = false) => (
     <button
@@ -37,7 +44,7 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       className={`flex items-center gap-2 px-1 ${
         activeTab === tab.name
           ? "text-purple-700 dark:text-white"
-          : "text-gray-500 hover:text-purple-600 dark:text-white dark:hover:text-white"
+          : "text-gray-500 hover:text-purple-600 dark:text-neutral-400 dark:hover:text-white"
       } ${isDropdown ? "w-full" : ""}`}
     >
       {tab.icon}
@@ -55,12 +62,12 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       />
 
       {/* TABS */}
-      <div className="hidden md:flex flex-1 justify-end items-end gap-2">
+      <div className="hidden min-[862px]:flex flex-1 justify-end items-end gap-2">
         {tabOptions.map((tab) => renderTabButton(tab))}
       </div>
 
       {/* DROPDOWN FOR SMALLER SCREENS */}
-      <div className="relative md:hidden flex-1 flex justify-end flex-shrink-0">
+      <div className="relative min-[862px]:hidden flex-1 flex justify-end flex-shrink-0">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="flex items-center text-purple-500 dark:text-white cursor-pointer hover:text-purple-250 dark:hover:text-purple-100 transition-colors duration-200"
@@ -90,7 +97,7 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       {/* Creation Date */}
       <div className="flex items-center gap-1 text-xs font-thin text-purple-300 dark:text-neutral-400">
         <PencilLine className="h-4 w-4" />
-        <p>Created: {project?.creationDate}</p>
+        <p>Created: {formattedCreationDate}</p>
       </div>
     </div>
   );
@@ -102,10 +109,12 @@ type ProjectDetailProps = {
 };
 
 const statusColors: Record<string, string> = {
-  "To do": "orange-400",
-  Postponed: "yellow-500",
-  "In Progress": "blue-500",
-  Completed: "green-600",
+  "To Do": colors.orange[300],
+  Postponed: colors.yellow[300],
+  "In Progress": colors.blue[400],
+  Completed: colors.green[600],
+  "In Review": colors.fuchsia[400],
+  Backlog: colors.gray[500],
 };
 
 const ProjectDetails = ({ name, status }: ProjectDetailProps) => {
@@ -119,8 +128,9 @@ const ProjectDetails = ({ name, status }: ProjectDetailProps) => {
       </h1>
       {/* STAUS */}
       <p
-        className={`text-${statusColorClass} text-sm font-semibold
-           drop-shadow-[0_0_10px] drop-shadow-${statusColorClass}`}
+        className={`text-sm font-semibold
+           `}
+        style={{ color: statusColorClass, filter: "drop-shadow(0 0 8px)" }}
       >
         {status}
       </p>

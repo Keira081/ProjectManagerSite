@@ -11,7 +11,7 @@ export enum Priority {
 export enum Status {
   ToDo = "To Do",
   WorkInProgress = "In Progress",
-  UnderReview = "Under Review",
+  UnderReview = "In Review",
   Postponed = "Postponed",
   Completed = "Completed",
 }

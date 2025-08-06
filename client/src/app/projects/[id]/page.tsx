@@ -5,18 +5,17 @@ import ProjectHeader from "@/app/projects/ProjectHeader";
 // import { useGetProjectByIdQuery } from "@/states/api";
 import { useParams } from "next/navigation";
 import Board from "../BoardView";
+import Timeline from "../CalendarView";
+
 const Project = () => {
   const { id } = useParams();
   const projectId = Number(id);
 
-  const [activeTab, setActiveTab] = useState("List");
+  const [activeTab, setActiveTab] = useState("Board");
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
   return (
-    <div>
-      {/* Header */}
-
-      <div className="pb-6 pt-6 lg:pb-4 lg:pt-8"></div>
+    <div className="pt-2">
       {/* <ModalNewTask
         isOpen={isModalNewTaskOpen}
         onClose={() => setIsModalNewTaskOpen(false)}
@@ -28,17 +27,30 @@ const Project = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
+
       {activeTab === "Board" && (
-        <Board id={projectId} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
+        <Board
+          projectId={projectId}
+          setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+        />
       )}
-      {/* {activeTab === "List" && (
-        <List id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
-      )}
+      {/* {activeTab === "Table" && (
+        <Table
+          projectId={projectId}
+          setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+        />
+      )} */}
       {activeTab === "Timeline" && (
-        <Timeline id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
+        <>
+          hii
+          <Timeline
+            projectId={projectId}
+            setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+          />
+        </>
       )}
-      {activeTab === "Table" && (
-        <Table id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
+      {/*{activeTab === "Table" && (
+        <Table projectId={projectId} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
       )} */}
     </div>
   );

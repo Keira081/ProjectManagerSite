@@ -36,7 +36,19 @@ async function main() {
     "taskAssignment.json",
   ];
 
-  await deleteAllData(orderedFileNames);
+    const DeleteorderedFileNames = [
+    "projectTeam.json",
+    "team.json",
+    "projectAssignment.json",
+    "taskAssignment.json",
+   "attachment.json",
+    "group.json",
+    "comment.json",
+    "task.json",
+    "user.json",
+    "project.json",
+  ];
+  await deleteAllData(DeleteorderedFileNames);
 
   for (const fileName of orderedFileNames) {
     const filePath = path.join(dataDirectory, fileName);

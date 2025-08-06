@@ -36,7 +36,7 @@ const Sidebar = () => {
       {/* COLLAPSE BUTTON CENTERED VERTICALLY */}
       <button
         onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
-        className="shadow-[2px_0_3px_rgba(0,0,0,0.1)] absolute top-1/2 -translate-y-1/2 left-full -translate-x-[1px] w-6 h-10 flex items-center justify-center z-20 rounded-r-lg bg-gray-50 dark:bg-purple-400 hover:bg-gray-100 dark:hover:bg-purple-200"
+        className="shadow-[2px_0_3px_rgba(0,0,0,0.1)] absolute top-1/2 -translate-y-1/2 left-full -translate-x-[1px] w-4 h-9 flex items-center justify-center z-20 rounded-r-lg bg-gray-50 dark:bg-purple-400 hover:bg-gray-100 dark:hover:bg-purple-200"
       >
         {isSidebarCollapsed ? (
           <ChevronRight className="h-5 w-5 text-purple-700 dark:text-white" />
