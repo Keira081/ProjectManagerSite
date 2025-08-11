@@ -9,7 +9,7 @@ import {
   Search,
   X,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { setIsShowProjects, setIsSidebarCollapsed } from "@/states/slices";
@@ -27,8 +27,28 @@ const Sidebar = () => {
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
+
+  // ⬅ NEW: ref for sidebar
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  // ⬅ NEW: close when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !isSidebarCollapsed
+      ) {
+        dispatch(setIsSidebarCollapsed(true));
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSidebarCollapsed, dispatch]);
+
   return (
     <div
+      ref={sidebarRef} // ⬅ added ref
       className={`fixed top-0 left-0 z-10 transition-all duration-500 ease-in-out h-full 
     ${isSidebarCollapsed ? "w-0  top-0" : "w-60 "}
     bg-gray-50 shadow-xl dark:bg-purple-400 dark:shadow-black`}

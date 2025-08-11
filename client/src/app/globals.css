@@ -30,3 +30,61 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(100, 100, 100, 0.4) transparent;
 }
+
+@layer utilities {
+  /* TASK AND DATE SECTION */
+  /* --------- */
+  /* TASK COLUMNS */
+  ._34SS0:nth-of-type(even) {
+    /* purple-100 */
+    background-color: #cbc2cd !important;
+  }
+
+  /* CALENDAR SECTION */
+  /* --------- */
+  /* TASK ROWS */
+  ._2dZTy {
+    fill: #fafafa !important;
+  }
+  ._2dZTy:nth-child(even) {
+    fill: #cbc2cd !important;
+  }
+
+  .dark {
+    /* TASK AND DATE SECTION */
+    /* --------- */
+    /* TASK COLUMNS */
+    ._34SS0:nth-of-type(odd) {
+      /* purple-300 */
+      background-color: #57475b !important;
+    }
+
+    ._34SS0:nth-of-type(even) {
+      /* purple-300 */
+      background-color: #827386 !important;
+    }
+
+    /* CALENDAR SECTION */
+    /* --------- */
+    /* MONTH AND YEAR CONTAINER */
+    ._35nLX {
+      /* purple-500 */
+      fill: #3c303f !important;
+    }
+    /* MONTH TEXT */
+    ._9w8d5 {
+      fill: #ffffff !important;
+    }
+    /* YEAR TEXT */
+    ._2q1Kt {
+      fill: #ffffff !important;
+    }
+    /* TASK ROWS */
+    ._2dZTy {
+      fill: #605363 !important;
+    }
+    ._2dZTy:nth-child(even) {
+      fill: #97869c !important;
+    }
+  }
+}

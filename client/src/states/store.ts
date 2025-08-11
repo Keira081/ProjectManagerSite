@@ -1,4 +1,3 @@
-
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { globalSlice } from "./slices";
 import storage from "redux-persist/lib/storage";

@@ -1,4 +1,4 @@
-import { useGetProjectByIdQuery, useGetProjectsQuery } from "@/states/api";
+import { useGetProjectByIdQuery } from "@/states/api";
 import { format } from "date-fns";
 import {
   CalendarDays,
@@ -8,8 +8,7 @@ import {
   PencilLine,
   Table2,
 } from "lucide-react";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import colors from "tailwindcss/colors";
 
 type Props = {
@@ -27,6 +26,7 @@ const tabOptions = [
 
 const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: project } = useGetProjectByIdQuery({ id: projectId });
   const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState(false);
 
@@ -41,7 +41,7 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
         setActiveTab(tab.name);
         if (isDropdown) setDropdownOpen(false);
       }}
-      className={`flex items-center gap-2 px-1 ${
+      className={`flex items-center gap-2 px-1 py-1 ${
         activeTab === tab.name
           ? "text-purple-700 dark:text-white"
           : "text-gray-500 hover:text-purple-600 dark:text-neutral-400 dark:hover:text-white"
@@ -52,10 +52,29 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
     </button>
   );
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="flex items-end px-5 justify-between border-b border-purple-100 dark:border-purple-250 pb-2 gap-3">
-      {/* PROJECT */}
+      {/* MODAL */}
+      {/* <ModalNewProject
+        isOpen={isModalNewProjectOpen}
+        onClose={() => setIsModalNewProjectOpen(false)}
+      /> */}
 
+      {/* PROJECT */}
       <ProjectDetails
         name={project?.name || "Loading..."}
         status={project?.status || "Loading..."}
@@ -67,7 +86,10 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       </div>
 
       {/* DROPDOWN FOR SMALLER SCREENS */}
-      <div className="relative min-[862px]:hidden flex-1 flex justify-end flex-shrink-0">
+      <div
+        className="relative min-[862px]:hidden flex-1 flex justify-end flex-shrink-0"
+        ref={dropdownRef}
+      >
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="flex items-center text-purple-500 dark:text-white cursor-pointer hover:text-purple-250 dark:hover:text-purple-100 transition-colors duration-200"
@@ -77,14 +99,14 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
         </button>
 
         <div
-          className={` translate-x-15 overflow-hidden transition-all duration-300 ease-in-out 
+          className={`translate-x-15 overflow-hidden transition-all duration-300 ease-in-out 
             origin-top-right absolute top-full mt-1 w-40 shadow-lg
-           bg-white dark:bg-purple-700 border border-gray-300 dark:border-gray-600 z-10  
-           ${
-             dropdownOpen
-               ? "max-h-96 opacity-100 translate-y-0"
-               : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
-           } `}
+            bg-white dark:bg-purple-700 border border-gray-300 dark:border-gray-600 z-10
+            ${
+              dropdownOpen
+                ? "max-h-96 opacity-100 translate-y-0"
+                : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
+            }`}
         >
           <ul>
             {tabOptions.map((tab) => (
@@ -122,14 +144,11 @@ const ProjectDetails = ({ name, status }: ProjectDetailProps) => {
 
   return (
     <div className="flex items-baseline gap-4">
-      {/* NAME */}
       <h1 className="text-4xl tracking-[.10em] font-medium text-purple-400 dark:text-white">
         {name}
       </h1>
-      {/* STAUS */}
       <p
-        className={`text-sm font-semibold
-           `}
+        className="text-sm font-semibold"
         style={{ color: statusColorClass, filter: "drop-shadow(0 0 8px)" }}
       >
         {status}
