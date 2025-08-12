@@ -1,10 +1,14 @@
 "use client";
 
-import { useGetTasksQuery, useUpdateTaskStatusMutation } from "@/states/api";
+import {
+  Priority,
+  useGetTasksQuery,
+  useUpdateTaskStatusMutation,
+} from "@/states/api";
 import React, { useEffect, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Task as TaskType } from "@/states/api";
+import { Task as TaskType, Status } from "@/states/api";
 import {
   ChevronDown,
   ChevronUp,
@@ -12,24 +16,22 @@ import {
   MessageSquareMore,
   Plus,
 } from "lucide-react";
-import colors from "tailwindcss/colors";
+import { statusColors, priorityBubbles } from "@/styles/TagColors";
 import { format } from "date-fns";
 import Image from "next/image";
 type BoardProps = {
   projectId: number;
   setIsModalNewTaskOpen: (isOpen: boolean) => void;
+  setImportedStatus: (importedStatus: Status) => void;
 };
 
-const taskStatus = [
-  "To Do",
-  "In Progress",
-  "Postponed",
-  "Backlog",
-  "In Review",
-  "Completed",
-];
+const taskStatus: Status[] = Object.values(Status);
 
-const Board = ({ projectId, setIsModalNewTaskOpen }: BoardProps) => {
+const Board = ({
+  projectId,
+  setIsModalNewTaskOpen,
+  setImportedStatus,
+}: BoardProps) => {
   const {
     data: tasks,
     isLoading,
@@ -37,7 +39,7 @@ const Board = ({ projectId, setIsModalNewTaskOpen }: BoardProps) => {
   } = useGetTasksQuery({ projectId: projectId });
 
   const [updateTaskStatus] = useUpdateTaskStatusMutation();
-  const moveTask = (taskId: number, toStatus: string) => {
+  const moveTask = (taskId: number, toStatus: Status) => {
     updateTaskStatus({ taskId, status: toStatus });
   };
 
@@ -60,6 +62,7 @@ const Board = ({ projectId, setIsModalNewTaskOpen }: BoardProps) => {
                   tasks={tasks || []}
                   moveTask={moveTask}
                   setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+                  setImportedStatus={setImportedStatus}
                   isMobile={false}
                 />
               </div>
@@ -76,6 +79,7 @@ const Board = ({ projectId, setIsModalNewTaskOpen }: BoardProps) => {
               tasks={tasks || []}
               moveTask={moveTask}
               setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+              setImportedStatus={setImportedStatus}
               isMobile={true}
             />
           ))}
@@ -88,20 +92,12 @@ const Board = ({ projectId, setIsModalNewTaskOpen }: BoardProps) => {
 //npm i @mui/material @emotion/react @emotion/styled numeral date-fns axios recharts react-dnd react-dnd-html5-backend gantt-task-react
 
 type TaskColumnProps = {
-  status: string;
+  status: Status;
   tasks: TaskType[];
-  moveTask: (taskId: number, toStatus: string) => void;
+  moveTask: (taskId: number, toStatus: Status) => void;
   setIsModalNewTaskOpen: (isOpen: boolean) => void;
+  setImportedStatus: (importedStatus: Status) => void;
   isMobile: boolean;
-};
-
-const statusColors: Record<string, string> = {
-  "To Do": colors.orange[300],
-  Postponed: colors.yellow[300],
-  "In Progress": colors.blue[400],
-  Completed: colors.green[500],
-  "In Review": colors.fuchsia[400],
-  Backlog: colors.gray[500],
 };
 
 const TaskColumn = ({
@@ -109,6 +105,7 @@ const TaskColumn = ({
   tasks,
   moveTask,
   setIsModalNewTaskOpen,
+  setImportedStatus,
   isMobile,
 }: TaskColumnProps) => {
   const [{ isOver }, drop] = useDrop(() => ({
@@ -123,7 +120,7 @@ const TaskColumn = ({
   const taskCount = tasks.filter((task) => task.status == status).length;
 
   //Work around for not being able to update Tailwind class dynamically
-  const statusColorClass = statusColors[status] || "gray-200";
+  const statusColorClass = statusColors[status];
   const [hover, setHover] = useState(false);
   //- - -
 
@@ -168,7 +165,10 @@ const TaskColumn = ({
             style={{
               backgroundColor: hover ? statusColorClass : undefined,
             }}
-            onClick={() => setIsModalNewTaskOpen(true)}
+            onClick={() => {
+              setIsModalNewTaskOpen(true);
+              setImportedStatus(status);
+            }}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
@@ -213,13 +213,6 @@ const TaskColumn = ({
   );
 };
 
-const priorityColors: Record<string, string[]> = {
-  Urgent: [colors.red[700], colors.red[200]],
-  High: [colors.yellow[700], colors.yellow[200]],
-  Medium: [colors.green[700], colors.green[200]],
-  Low: [colors.blue[700], colors.blue[200]],
-};
-
 type TaskProps = {
   task: TaskType;
 };
@@ -234,8 +227,7 @@ const Task = ({ task }: TaskProps) => {
   }));
 
   const taskTags = task.tags ? task.tags.split(",") : [];
-  const priority = task.priority || "";
-
+  const priority = (task.priority || "Backlog") as Priority;
   const formattedCreationDate = task.creationDate
     ? format(new Date(task.creationDate), "P")
     : "";
@@ -266,8 +258,8 @@ const Task = ({ task }: TaskProps) => {
                 className={`rounded-full px-2 py-1 
                text-xs font-semibold `}
                 style={{
-                  backgroundColor: priorityColors[priority][1],
-                  color: priorityColors[priority][0],
+                  backgroundColor: priorityBubbles[priority][1],
+                  color: priorityBubbles[priority][0],
                 }}
               >
                 {priority}

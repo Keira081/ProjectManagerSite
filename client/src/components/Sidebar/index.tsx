@@ -9,12 +9,13 @@ import {
   Search,
   X,
 } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { setIsShowProjects, setIsSidebarCollapsed } from "@/states/slices";
 import { useAppDispatch, useAppSelector } from "@/states/store";
 import { useGetProjectsQuery } from "@/states/api";
+import NewProjectModal from "../NewProjectModal";
 
 const Sidebar = () => {
   const { data: projects } = useGetProjectsQuery();
@@ -27,6 +28,8 @@ const Sidebar = () => {
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
   );
+
+  const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState(false);
 
   // ⬅ NEW: ref for sidebar
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -92,13 +95,19 @@ const Sidebar = () => {
         </div>
         {/* NAVBAR LINKS */}
         <SidebarHeader title="PROJECTS" />
-        <div className="mb-2">
-          <NavLink
+        {/* CREATE PROJECT */}
+        <div className="mb-2 cursor-pointer">
+          <ModalButton
             title="+ Create Projects"
             href="/createProj"
-            textClassName="font-semibold"
+            onClickCall={() => setIsModalNewProjectOpen(true)}
           />
-          <NavLink title="All Projects" href="/allProjs" />
+
+          <NewProjectModal
+            isOpen={isModalNewProjectOpen}
+            onClose={() => setIsModalNewProjectOpen(false)}
+          />
+          <NavLink title="All Projects" href="/projects/allProjects" />
         </div>
         {/* ALL PROJECTS */}
         <button
@@ -119,14 +128,15 @@ const Sidebar = () => {
               : "max-h-0 opacity-0 -translate-y-2"
           }`}
         >
-          <div className="mb-2">
-            <NavLink
+          {/* GROUPS */}
+          <div className="mb-2 cursor-pointer">
+            <ModalButton
               title="+ Create a Group"
               href="/createGroup"
-              textClassName="font-semibold"
+              onClickCall={() => setIsModalNewProjectOpen(true)}
             />
           </div>
-
+          {/* MAPPING PROJECTS */}
           {projects?.map((project) => (
             <NavLink
               key={project.id}
@@ -137,10 +147,10 @@ const Sidebar = () => {
           ))}
         </div>
         {/* TASKS */}
-        <SidebarHeader title="TASKS" />
+        {/* <SidebarHeader title="TASKS" />
         <div className="mb-2">
           <NavLink title="All Tasks" href="/allTasks" />
-        </div>
+        </div> */}
         {/* TEAMS */}
         <SidebarHeader title="TEAMS" />
         <div className="mb-2">
@@ -170,7 +180,7 @@ interface NavLinkProps {
   title: string;
   href: string;
   icon?: LucideIcon;
-  textClassName?: string; // add this
+  textClassName?: string;
 }
 
 const NavLink = ({
@@ -195,6 +205,32 @@ const NavLink = ({
         <p className={`${textClassName} text-black dark:text-white`}>{title}</p>
       </div>
     </Link>
+  );
+};
+
+interface ModalButtonProps {
+  title: string;
+  href: string;
+  icon?: LucideIcon;
+  onClickCall: () => void;
+}
+
+const ModalButton = ({
+  title,
+  href,
+  icon: Icon,
+  onClickCall,
+}: ModalButtonProps) => {
+  const currentPath = usePathname();
+  const isSelected = href === currentPath;
+
+  return (
+    <div className="ml-8 flex items-center gap-3 p-[2px] hover:bg-gray-100 hover:dark:bg-purple-300">
+      <button onClick={onClickCall}>
+        {Icon && <Icon className="h-4 w-4 text-gray-800 dark:text-gray-100" />}
+        <p className="font-semibold text-black dark:text-white">{title}</p>
+      </button>
+    </div>
   );
 };
 

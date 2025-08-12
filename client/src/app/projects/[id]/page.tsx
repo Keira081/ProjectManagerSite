@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import ProjectHeader from "@/app/projects/ProjectHeader";
 import { useParams } from "next/navigation";
-import Board from "../BoardView";
-import Timeline from "../CalendarView";
-import Table from "../TableView";
+import Board from "./BoardView";
+import Table from "./TableView";
+import NewTaskModal from "@/components/NewTaskModal";
+import TaskTimelineView from "./TaskTimelineView";
 
 const Project = () => {
   const { id } = useParams();
@@ -14,13 +15,18 @@ const Project = () => {
   const [activeTab, setActiveTab] = useState("Table");
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
+  const [importedStatus, setImportedStatus] = useState("");
+
+  const [showLoading, setShowLoading] = useState(false); // <-- NEW
+
   return (
     <div className="pt-2">
-      {/* <ModalNewTask
+      <NewTaskModal
         isOpen={isModalNewTaskOpen}
         onClose={() => setIsModalNewTaskOpen(false)}
-        id={id}
-      /> */}
+        projectId={projectId}
+        importedStatus={importedStatus}
+      />
 
       <ProjectHeader
         projectId={projectId}
@@ -32,6 +38,7 @@ const Project = () => {
         <Board
           projectId={projectId}
           setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+          setImportedStatus={setImportedStatus}
         />
       )}
       {activeTab === "Table" && (
@@ -41,7 +48,7 @@ const Project = () => {
         />
       )}
       {activeTab === "Timeline" && (
-        <Timeline
+        <TaskTimelineView
           projectId={projectId}
           setIsModalNewTaskOpen={setIsModalNewTaskOpen}
         />

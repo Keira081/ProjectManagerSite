@@ -1,4 +1,4 @@
-import { useGetProjectByIdQuery } from "@/states/api";
+import { Status, useGetProjectByIdQuery } from "@/states/api";
 import { format } from "date-fns";
 import {
   CalendarDays,
@@ -9,7 +9,7 @@ import {
   Table2,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
-import colors from "tailwindcss/colors";
+import { statusColors } from "@/styles/TagColors";
 
 type Props = {
   projectId: number;
@@ -28,7 +28,6 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data: project } = useGetProjectByIdQuery({ id: projectId });
-  const [isModalNewProjectOpen, setIsModalNewProjectOpen] = useState(false);
 
   const formattedCreationDate = project?.creationDate
     ? format(new Date(project.creationDate), "P")
@@ -68,12 +67,6 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
 
   return (
     <div className="flex items-end px-5 justify-between border-b border-purple-100 dark:border-purple-250 pb-2 gap-3">
-      {/* MODAL */}
-      {/* <ModalNewProject
-        isOpen={isModalNewProjectOpen}
-        onClose={() => setIsModalNewProjectOpen(false)}
-      /> */}
-
       {/* PROJECT */}
       <ProjectDetails
         name={project?.name || "Loading..."}
@@ -81,7 +74,7 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       />
 
       {/* TABS */}
-      <div className="hidden min-[862px]:flex flex-1 justify-end items-end gap-2">
+      <div className="hidden min-[862px]:flex flex-1 justify-end items-end  transform translate-y-2 gap-2">
         {tabOptions.map((tab) => renderTabButton(tab))}
       </div>
 
@@ -92,7 +85,7 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       >
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center text-purple-500 dark:text-white cursor-pointer hover:text-purple-250 dark:hover:text-purple-100 transition-colors duration-200"
+          className="flex items-center transform translate-y-1 text-purple-500 dark:text-white cursor-pointer hover:text-purple-250 dark:hover:text-purple-100 transition-colors duration-200"
         >
           Views
           <EllipsisVertical className="pl-2 translate-y-0.5" />
@@ -127,20 +120,11 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
 
 type ProjectDetailProps = {
   name: string;
-  status: string;
-};
-
-const statusColors: Record<string, string> = {
-  "To Do": colors.orange[300],
-  Postponed: colors.yellow[300],
-  "In Progress": colors.blue[400],
-  Completed: colors.green[600],
-  "In Review": colors.fuchsia[400],
-  Backlog: colors.gray[500],
+  status: Status | string;
 };
 
 const ProjectDetails = ({ name, status }: ProjectDetailProps) => {
-  const statusColorClass = statusColors[status] || "gray-200";
+  const statusColorClass = statusColors[status as Status];
 
   return (
     <div className="flex items-baseline gap-4">

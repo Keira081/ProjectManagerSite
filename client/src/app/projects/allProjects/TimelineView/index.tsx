@@ -1,3 +1,4 @@
+import TimeLine from "@/components/TimeLine";
 import { useGetTasksQuery } from "@/states/api";
 import { useAppSelector } from "@/states/store";
 import { DisplayOption, Gantt, ViewMode } from "@rsagiev/gantt-task-react-19";
@@ -19,7 +20,10 @@ const viewOptions = [
   { label: "Month", value: ViewMode.Month },
 ];
 
-const Timeline = ({ projectId, setIsModalNewTaskOpen }: Props) => {
+const ProjectTaskTimelineView = ({
+  projectId,
+  setIsModalNewTaskOpen,
+}: Props) => {
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
   const {
     data: tasks,
@@ -99,58 +103,20 @@ const Timeline = ({ projectId, setIsModalNewTaskOpen }: Props) => {
   if (error) return <div>An error occurred while fetching tasks</div>;
   if (!tasks) return <div>No Tasks :c</div>;
 
-  console.log("Final ganttTasks before render:", ganttTasks);
-  console.log("Display options:", displayOptions);
-
   return (
     <div className="px-4 xl:px-6">
       <div className="flex flex-wrap items-center justify-between gap-2 py-5">
-        <h1 className="me-2 text-lg font-bold dark:text-white">
-          Project Tasks Timeline
-        </h1>
-
-        {/* VIEW MODE DROP DOWN */}
-        <div className="relative inline-block" ref={dropdownRef}>
-          {/* BUTTON */}
-          <div
-            className="rounded border border-gray-400 bg-white px-4 py-2 leading-tight 
-                       hover:border-gray-500 cursor-pointer dark:bg-purple-300 dark:text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {displayOptions.viewMode}
-          </div>
-
-          {/* MENU */}
-          <div
-            className={`absolute left-0 w-full mt-1 shadow-lg bg-purple-600 
-                       transition-all duration-200 origin-top z-10
-                       ${isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"} `}
-          >
-            <div className="border border-gray-300 dark:border-gray-600">
-              {viewOptions.map((option) => (
-                <div
-                  key={option.value}
-                  onClick={() => handleViewModeChange(option.value)}
-                  className={`px-4 py-2 cursor-pointer bg-white dark:bg-purple-700
-                           hover:bg-purple-200 dark:hover:bg-purple-300 hover:text-white transition-colors duration-150
-                           ${displayOptions.viewMode === option.value ? "bg-purple-300 text-purple-700 dark:text-white" : "text-gray-500 hover:text-purple-600 dark:text-neutral-400 dark:hover:text-white"}`}
-                >
-                  {option.label}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="overflow-hidden dark:text-white shadow">
-        <Gantt
-          tasks={ganttTasks}
-          {...displayOptions}
-          columnWidth={displayOptions.viewMode === ViewMode.Month ? 150 : 100}
-          listCellWidth="120px" // slightly wider for readability
-          barBackgroundColor={isDarkMode ? "#86618f" : "#9C7FA3"} // blue-500 vs blue-600
-          barBackgroundSelectedColor={isDarkMode ? "#3c303f" : "#827386"} // blue-600 vs blue-700
+        <TimeLine
+          projectId={projectId}
+          dataType="task"
+          dataSet={(tasks ?? []).map((task) => ({
+            ...task,
+            startDate: task.startDate || task.creationDate,
+            dueDate: task.dueDate || task.creationDate, // default if missing
+          }))}
+          error={error}
+          isLoading={isLoading}
+          header="Project Tasks Timeline"
         />
 
         <div className="flex items-center px-4 pb-5 pt-1 shadow-2xl">
@@ -167,4 +133,4 @@ const Timeline = ({ projectId, setIsModalNewTaskOpen }: Props) => {
   );
 };
 
-export default Timeline;
+export default ProjectTaskTimelineView;
