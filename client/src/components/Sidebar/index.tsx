@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Search,
   X,
+  Settings,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -15,7 +16,8 @@ import Link from "next/link";
 import { setIsShowProjects, setIsSidebarCollapsed } from "@/states/slices";
 import { useAppDispatch, useAppSelector } from "@/states/store";
 import { useGetProjectsQuery } from "@/states/api";
-import NewProjectModal from "../NewProjectModal";
+import NewProjectModal from "../Modals/NewProjectModal";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const { data: projects } = useGetProjectsQuery();
@@ -49,6 +51,17 @@ const Sidebar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSidebarCollapsed, dispatch]);
 
+  const router = useRouter();
+  const [sidebarSearchTerm, setSidebarSearchTerm] = useState("");
+
+  // handle enter press
+  const handleSidebarSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const encodedTerm = encodeURIComponent(sidebarSearchTerm);
+      router.push(`/searchPage?query=${encodedTerm}`);
+      dispatch(setIsSidebarCollapsed(true));
+    }
+  };
   return (
     <div
       ref={sidebarRef} // ⬅ added ref
@@ -90,9 +103,13 @@ const Sidebar = () => {
             type="text"
             placeholder="Search..."
             className="bg-transparent outline-none"
+            value={sidebarSearchTerm}
+            onChange={(e) => setSidebarSearchTerm(e.target.value)}
+            onKeyDown={handleSidebarSearch}
           />
           <Search className="w-[15px] h-[15px]" />
         </div>
+
         {/* NAVBAR LINKS */}
         <SidebarHeader title="PROJECTS" />
         {/* CREATE PROJECT */}

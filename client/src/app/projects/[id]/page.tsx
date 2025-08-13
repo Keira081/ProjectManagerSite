@@ -5,7 +5,7 @@ import ProjectHeader from "@/app/projects/[id]/ProjectHeader";
 import { useParams } from "next/navigation";
 import Board from "./BoardView";
 import Table from "./TableView";
-import NewTaskModal from "@/components/NewTaskModal";
+import NewTaskModal from "@/components/Modals/NewTaskModal";
 import TaskTimelineView from "./TaskTimelineView";
 
 const Project = () => {

@@ -9,30 +9,38 @@ export const search = async (req: Request, res: Response): Promise<void> => {
     const tasks = await prisma.task.findMany({
       where: {
         OR: [
-          { name: { contains: query as string } },
-          { description: { contains: query as string } },
+          { name: { contains: query as string, mode: "insensitive" } },
+          { description: { contains: query as string, mode: "insensitive" } },
+          {
+            project: {
+              name: { contains: query as string, mode: "insensitive" },
+            },
+          },
         ],
+      },
+      include: {
+        project: true, // so you get project data back in the response
       },
     });
 
     const projects = await prisma.project.findMany({
       where: {
         OR: [
-          { name: { contains: query as string } },
-          { description: { contains: query as string } },
+          { name: { contains: query as string, mode: "insensitive" } },
+          { description: { contains: query as string, mode: "insensitive" } },
         ],
       },
     });
 
     const users = await prisma.user.findMany({
       where: {
-        OR: [{ username: { contains: query as string } }],
+        OR: [{ username: { contains: query as string, mode: "insensitive" } }],
       },
     });
 
     const teams = await prisma.team.findMany({
       where: {
-        OR: [{ teamName: { contains: query as string } }],
+        OR: [{ teamName: { contains: query as string, mode: "insensitive" } }],
       },
     });
 

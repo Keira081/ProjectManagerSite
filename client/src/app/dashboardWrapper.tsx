@@ -1,6 +1,6 @@
 "use client";
 //Cant put "use client" in layout.tsx -> creating an additionally wrapper
-import Header from "@/components/Header";
+import Banner from "@/components/Banner";
 import Sidebar from "@/components/Sidebar";
 import { useAppSelector } from "@/states/store";
 import React, { useEffect } from "react";
@@ -19,7 +19,7 @@ const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
     <div className="flex min-h-screen">
       <Sidebar />
       <main className="flex w-full flex-col bg-white dark:bg-purple-500">
-        <Header />
+        <Banner />
         {children}
       </main>
     </div>
