@@ -73,6 +73,20 @@ export interface Task {
   comments: Comment[];
 }
 
+export interface Team {
+  teamId: number;
+  teamName: string;
+  productOwnerUserId?: number;
+  projectManagerUserId?: number;
+}
+
+export interface SearchResults {
+  tasks?: Task[];
+  projects?: Project[];
+  users?: User[];
+  teams?: Team[];
+}
+
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000",
@@ -85,6 +99,10 @@ export const api = createApi({
   reducerPath: "api",
   tagTypes: ["Projects", "Tasks", "Groups"], //point of tags and invalidating or providng them
   endpoints: (build) => ({
+    // SEARCH ENDPOINT
+    search: build.query<SearchResults, string>({
+      query: (query) => `search?query=${query}`,
+    }),
     // PROJECT ENDPOINTS
     getProjects: build.query<Project[], void>({
       query: () => "/projects",
@@ -135,6 +153,7 @@ export const api = createApi({
 });
 
 export const {
+  useSearchQuery,
   useGetProjectsQuery, //"Query" is associated with GET commands
   useGetProjectByIdQuery,
   useCreateProjectMutation, //"Mutation" is associated with POST commands...and I assume any command that changes the data in some way
