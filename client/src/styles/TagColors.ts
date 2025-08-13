@@ -12,7 +12,7 @@ export const statusBubbles: Record<Status, string[]> = {
 export const statusColors: Record<Status, string> = {
   [Status.ToDo]: colors.orange[300],
   [Status.UnderReview]: colors.fuchsia[400],
-  [Status.Postponed]: colors.yellow[400],
+  [Status.Postponed]: colors.yellow[500],
   [Status.InProgress]: colors.blue[400],
   [Status.Completed]: colors.green[600],
 };

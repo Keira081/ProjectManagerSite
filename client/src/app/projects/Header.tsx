@@ -1,37 +1,42 @@
-import { Status, useGetProjectByIdQuery } from "@/states/api";
-import { format } from "date-fns";
-import {
-  CalendarDays,
-  EllipsisVertical,
-  List,
-  Pencil,
-  PencilLine,
-  Table2,
-} from "lucide-react";
+import { Status } from "@/states/api";
+import { EllipsisVertical } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import { statusColors } from "@/styles/TagColors";
+import styled from "styled-components";
 
 type Props = {
-  projectId: number;
+  header: any;
   activeTab: string;
   setActiveTab: (tabName: string) => void;
+  tabOptions: { name: string; icon: React.JSX.Element }[];
+  otherComponent?: any;
+  threshold?: number;
 };
 
-const tabOptions = [
-  { name: "Description", icon: <Pencil className="h-5 w-5" /> },
-  { name: "Board", icon: <Table2 className="h-5 w-5" /> },
-  { name: "Timeline", icon: <CalendarDays className="h-5 w-5" /> },
-  { name: "Table", icon: <List className="h-5 w-5" /> },
-];
+const TabsWrapper = styled.div<{ threshold: number }>`
+  @media (min-width: ${(props) => props.threshold}px) {
+    display: flex !important;
+  }
+  display: none; /* hidden by default */
+`;
 
-const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
+const DropdownWrapper = styled.div<{ threshold: number }>`
+  @media (min-width: ${(props) => props.threshold}px) {
+    display: none !important;
+  }
+  display: flex; /* shown by default for smaller screens */
+`;
+
+const Header = ({
+  header,
+  activeTab,
+  setActiveTab,
+  tabOptions,
+  otherComponent,
+  threshold = 862,
+}: Props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { data: project } = useGetProjectByIdQuery({ id: projectId });
-
-  const formattedCreationDate = project?.creationDate
-    ? format(new Date(project.creationDate), "P")
-    : "";
 
   const renderTabButton = (tab: (typeof tabOptions)[0], isDropdown = false) => (
     <button
@@ -67,20 +72,20 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
 
   return (
     <div className="flex items-end px-5 justify-between border-b border-purple-100 dark:border-purple-250 pb-2 gap-3">
-      {/* PROJECT */}
-      <ProjectDetails
-        name={project?.name || "Loading..."}
-        status={project?.status || "Loading..."}
-      />
+      {header}
 
-      {/* TABS */}
-      <div className="hidden min-[862px]:flex flex-1 justify-end items-end  transform translate-y-2 gap-2">
+      {/* TABS FOR LARGER SCREENS */}
+      <TabsWrapper
+        threshold={threshold}
+        className="flex-1 justify-end items-end transform translate-y-2 gap-2"
+      >
         {tabOptions.map((tab) => renderTabButton(tab))}
-      </div>
+      </TabsWrapper>
 
       {/* DROPDOWN FOR SMALLER SCREENS */}
-      <div
-        className="relative min-[862px]:hidden flex-1 flex justify-end flex-shrink-0"
+      <DropdownWrapper
+        threshold={threshold}
+        className="relative flex-1 justify-end flex-shrink-0"
         ref={dropdownRef}
       >
         <button
@@ -107,38 +112,11 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
             ))}
           </ul>
         </div>
-      </div>
+      </DropdownWrapper>
 
-      {/* Creation Date */}
-      <div className="flex items-center gap-1 text-xs font-thin text-purple-300 dark:text-neutral-400">
-        <PencilLine className="h-4 w-4" />
-        <p>Created: {formattedCreationDate}</p>
-      </div>
+      {otherComponent}
     </div>
   );
 };
 
-type ProjectDetailProps = {
-  name: string;
-  status: Status | string;
-};
-
-const ProjectDetails = ({ name, status }: ProjectDetailProps) => {
-  const statusColorClass = statusColors[status as Status];
-
-  return (
-    <div className="flex items-baseline gap-4">
-      <h1 className="text-4xl tracking-[.10em] font-medium text-purple-400 dark:text-white">
-        {name}
-      </h1>
-      <p
-        className="text-sm font-semibold"
-        style={{ color: statusColorClass, filter: "drop-shadow(0 0 8px)" }}
-      >
-        {status}
-      </p>
-    </div>
-  );
-};
-
-export default ProjectHeader;
+export default Header;

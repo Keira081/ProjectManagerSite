@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import ProjectHeader from "@/app/projects/ProjectHeader";
+import ProjectHeader from "@/app/projects/[id]/ProjectHeader";
 import { useParams } from "next/navigation";
 import Board from "./BoardView";
 import Table from "./TableView";
