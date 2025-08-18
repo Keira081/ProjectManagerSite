@@ -25,9 +25,8 @@ export const dataGridSxStyles = (isDarkMode: boolean) => {
     "& .MuiDataGrid-cell": {
       border: `${isDarkMode ? "none" : ""}`,
     },
-    '& .MuiDataGrid-cell[data-field="status"] span': {
-      backgroundColor: `${isDarkMode ? "#97869c" : "#beb6c0"}`,
-      color: "#322835",
+    '& .MuiDataGrid-cell[data-field="priority"]': {
+      textAlign: "left",
     },
     "& .MuiDataGrid-row": {
       backgroundColor: `${isDarkMode ? "#beb6c0" : ""}`,

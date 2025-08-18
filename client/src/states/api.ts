@@ -97,17 +97,23 @@ export const api = createApi({
   }),
 
   reducerPath: "api",
-  tagTypes: ["Projects", "Tasks", "Groups"], //point of tags and invalidating or providng them
+  tagTypes: ["Projects", "Tasks", "Users", "Teams", "Groups"], //point of tags and invalidating or providng them
   endpoints: (build) => ({
     // SEARCH ENDPOINT
     search: build.query<SearchResults, string>({
       query: (query) => `search?query=${query}`,
     }),
+
     // PROJECT ENDPOINTS
     getProjects: build.query<Project[], void>({
       query: () => "/projects",
-      //Attaches '/projcets' to base url ^
-      providesTags: ["Projects"],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Projects" as const, id })),
+              { type: "Projects", id: "LIST" },
+            ]
+          : [{ type: "Projects", id: "LIST" }],
     }),
     createProject: build.mutation<Project, Partial<Project>>({
       query: (project) => ({
@@ -115,20 +121,34 @@ export const api = createApi({
         method: "POST",
         body: project,
       }),
-      invalidatesTags: ["Projects"],
+      invalidatesTags: [{ type: "Projects", id: "LIST" }], // triggers getProjects refetch
     }),
     getProjectById: build.query<Project, { id: number }>({
       query: ({ id }) => `/projects?id=${id}`,
-      providesTags: ["Projects"],
+      providesTags: (result, error, { id }) => [{ type: "Projects", id }],
     }),
+    deleteProject: build.mutation<{ message: string }, { id: number }>({
+      query: ({ id }) => ({
+        url: `/projects/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Projects", id }, // invalidate specific project
+        { type: "Projects", id: "LIST" }, // invalidate the list
+      ],
+    }),
+
     //TASK ENDPOINTS
     getTasks: build.query<Task[], { projectId: number }>({
       query: ({ projectId }) => `tasks?projectId=${projectId}`, //single values need {} to stay in json format
-      // "projectId" is a param in the URL we pass in
       providesTags: (result) =>
         result
           ? result.map(({ id }) => ({ type: "Tasks" as const, id }))
           : [{ type: "Tasks" as const }], //make sense of this
+    }),
+    getTaskById: build.query<Task, { id: number }>({
+      query: ({ id }) => `/tasks?id=${id}`,
+      providesTags: (result, error, { id }) => [{ type: "Tasks", id }],
     }),
     createTask: build.mutation<Task, Partial<Task>>({
       query: (task) => ({
@@ -140,7 +160,6 @@ export const api = createApi({
     }),
     updateTaskStatus: build.mutation<Task, { taskId: number; status: string }>({
       query: ({ taskId, status }) => ({
-        //needed to place vars in {} to work
         url: `/tasks/${taskId}/status`,
         method: "PATCH",
         body: { status }, //diff between status and { status }
@@ -148,6 +167,23 @@ export const api = createApi({
       invalidatesTags: (result, error, { taskId }) => [
         { type: "Tasks", id: taskId },
       ], //make sense of this
+    }),
+    deleteTasks: build.mutation<{ message: string }, { id: number }>({
+      query: ({ id }) => ({
+        url: `/tasks/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
+    //USER ENDPOINTS
+    getUsers: build.query<User[], void>({
+      query: () => "users",
+      providesTags: ["Users"],
+    }),
+    //TEAM ENDPOINT
+    getTeams: build.query<Team[], void>({
+      query: () => "teams",
+      providesTags: ["Teams"],
     }),
   }),
 });
@@ -160,4 +196,9 @@ export const {
   useGetTasksQuery,
   useCreateTaskMutation,
   useUpdateTaskStatusMutation,
+  useDeleteProjectMutation,
+  useDeleteTasksMutation,
+  useGetTaskByIdQuery,
+  useGetTeamsQuery,
+  useGetUsersQuery,
 } = api;

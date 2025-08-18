@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DisplayOption, Gantt, ViewMode } from "@rsagiev/gantt-task-react-19";
 import "@rsagiev/gantt-task-react-19/dist/index.css";
 import { useAppSelector } from "@/states/store";
+import { Check } from "lucide-react";
 
 type GanttItemType = "task" | "milestone" | "project";
 
@@ -103,16 +104,19 @@ const TimeLine = ({ dataSet, dataType, header }: Props) => {
                        transition-all duration-200 origin-top z-10
                        ${isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"} `}
           >
-            <div className="border border-gray-300 dark:border-gray-600">
+            <div className="absolute right-0 mt-2 w-30 rounded-md overflow-hidden shadow-lg border border-gray-300 dark:border-gray-600">
               {viewOptions.map((option) => (
                 <div
                   key={option.value}
                   onClick={() => handleViewModeChange(option.value)}
-                  className={`px-4 py-2 cursor-pointer bg-white dark:bg-purple-700
+                  className={`flex items-center justify-between px-4 py-2 cursor-pointer bg-white dark:bg-purple-700
                            hover:bg-purple-200 dark:hover:bg-purple-300 hover:text-white transition-colors duration-150
                            ${displayOptions.viewMode === option.value ? "bg-purple-300 text-purple-700 dark:text-white" : "text-gray-500 hover:text-purple-600 dark:text-neutral-400 dark:hover:text-white"}`}
                 >
                   {option.label}
+                  {displayOptions.viewMode === option.value && (
+                    <Check className="w-4 h-4" />
+                  )}
                 </div>
               ))}
             </div>
@@ -137,3 +141,5 @@ const TimeLine = ({ dataSet, dataType, header }: Props) => {
 };
 
 export default TimeLine;
+
+//Tasks completed per week/month

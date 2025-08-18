@@ -16,10 +16,22 @@ export const search = async (req: Request, res: Response): Promise<void> => {
               name: { contains: query as string, mode: "insensitive" },
             },
           },
+          {
+            author: {
+              username: { contains: query as string, mode: "insensitive" },
+            },
+          },
+          {
+            assignee: {
+              username: { contains: query as string, mode: "insensitive" },
+            },
+          },
         ],
       },
       include: {
-        project: true, // so you get project data back in the response
+        project: true,
+        author: true,
+        assignee: true,
       },
     });
 

@@ -7,7 +7,9 @@ import morgan from "morgan";
 //  ROUTE IMPORTS
 import projectRoutes from "./projects/routes";
 import taskRoutes from "./tasks/routes";
+import userRoutes from "./users/routes";
 import searchRoutes from "./search/routes";
+import teamsRoutes from "./teams/routes";
 // CONFIGURATIONS
 dotenv.config();
 const app = express();
@@ -25,7 +27,10 @@ app.get("/", (req, res) => {
 
 app.use("/projects", projectRoutes);
 app.use("/tasks", taskRoutes);
+app.use("/users", userRoutes);
 app.use("/search", searchRoutes);
+app.use("/teams", teamsRoutes);
+
 //  SERVER
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

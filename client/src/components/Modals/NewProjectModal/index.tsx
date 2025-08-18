@@ -15,8 +15,8 @@ const NewProjectModal = ({ isOpen, onClose }: Props) => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
+  const [status, setStatus] = useState(Status.ToDo);
+  const [priority, setPriority] = useState(Priority.Backlog);
 
   const handleSubmit = async () => {
     if (!projectName || !startDate || !dueDate) return;

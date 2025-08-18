@@ -5,6 +5,7 @@ export interface initialStateTypes {
   isShowGroups: boolean;
   isDarkMode: boolean;
   isShowProjects: boolean;
+  isShowTeams: boolean;
 }
 
 const initialState: initialStateTypes = {
@@ -12,6 +13,7 @@ const initialState: initialStateTypes = {
   isShowGroups: true,
   isDarkMode: true,
   isShowProjects: false,
+  isShowTeams: false,
 };
 
 export const globalSlice = createSlice({
@@ -29,13 +31,22 @@ export const globalSlice = createSlice({
     setIsDarkMode: (state, action: PayloadAction<boolean>) => {
       state.isDarkMode = action.payload;
     },
-    
+
     setIsShowProjects: (state, action: PayloadAction<boolean>) => {
       state.isShowProjects = action.payload;
+    },
+
+    setIsShowTeams: (state, action: PayloadAction<boolean>) => {
+      state.isShowTeams = action.payload;
     },
   },
 });
 
-export const { setIsDarkMode, setIsShowGroups, setIsSidebarCollapsed, setIsShowProjects } =
-  globalSlice.actions;
+export const {
+  setIsDarkMode,
+  setIsShowGroups,
+  setIsSidebarCollapsed,
+  setIsShowProjects,
+  setIsShowTeams,
+} = globalSlice.actions;
 export default globalSlice.reducer;

@@ -19,6 +19,7 @@ import {
 import { statusColors, priorityBubbles } from "@/styles/TagColors";
 import { format } from "date-fns";
 import Image from "next/image";
+import Link from "next/link";
 type BoardProps = {
   projectId: number;
   setIsModalNewTaskOpen: (isOpen: boolean) => void;
@@ -174,6 +175,7 @@ const TaskColumn = ({
           >
             <Plus size={16} />
           </button>
+
           {/* MOBILE TOGGLE */}
           {isMobile && (
             <>
@@ -206,7 +208,9 @@ const TaskColumn = ({
               `}
       >
         {columnTasks.map((task) => (
-          <Task key={task.id} task={task} />
+          <Link href={`/tasks/${task.id}`}>
+            <Task key={task.id} task={task} />{" "}
+          </Link>
         ))}
       </div>
     </div>

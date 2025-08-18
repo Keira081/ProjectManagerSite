@@ -11,6 +11,7 @@ import TeamCard from "@/components/Cards/TeamCard";
 import { useSearchParams } from "next/navigation";
 
 export const highlightText = (text: string, searchTerm?: string) => {
+  if (!text) return "";
   if (!searchTerm) return text;
   const escapedTerm = searchTerm.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
   const regex = new RegExp(`(${escapedTerm})`, "gi");

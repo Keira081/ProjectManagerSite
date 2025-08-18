@@ -1,8 +1,9 @@
-import { useGetTasksQuery } from "@/states/api";
+import { Status, useGetTasksQuery } from "@/states/api";
 import { useAppSelector } from "@/states/store";
 import { dataGridSxStyles } from "@/styles/dataGridStyle";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Plus } from "lucide-react";
+import { priorityBubbles, statusBubbles } from "@/styles/TagColors";
 
 type BoardProps = {
   projectId: number;
@@ -23,18 +24,40 @@ const columns: GridColDef[] = [
   {
     field: "status",
     headerName: "Status",
-    width: 130,
-    // COLOR MATCHES STATUS TYPE
-    renderCell: (params) => (
-      <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-        {params.value}
-      </span>
-    ),
+    width: 150,
+    renderCell: (params) => {
+      const status = statusBubbles[params.value as Status];
+      const [textColor, bgColor] = status ?? ["#374151", "#e5e7eb"]; // gray-700 / gray-200
+      return (
+        <span
+          className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
+          style={{ color: textColor, backgroundColor: bgColor }}
+        >
+          {params.value}
+        </span>
+      );
+    },
   },
   {
     field: "priority",
     headerName: "Priority",
     width: 75,
+    renderCell: (params) => {
+      const colors =
+        priorityBubbles[params.value as keyof typeof priorityBubbles];
+      const [textColor, bgColor] = colors;
+      return (
+        <span
+          className="inline-flex rounded-full px-2 text-xs font-semibold leading-5"
+          style={{
+            color: textColor,
+            backgroundColor: bgColor,
+          }}
+        >
+          {params.value}
+        </span>
+      );
+    },
   },
   {
     field: "tags",
@@ -77,7 +100,7 @@ const Table = ({ projectId, setIsModalNewTaskOpen }: BoardProps) => {
   if (error || !tasks) return <div>An error occurred while fetching tasks</div>;
 
   return (
-    <div className="h-[540px] w-full px-4 pb-8 xl:px-6">
+    <div className=" w-full h-[90%] mb-2 px-4  xl:px-6">
       <div className="flex items-center justify-between pt-4 pb-5">
         <h1 className=" text-lg font-bold dark:text-white">Table </h1>
         <div className="flex items-center pr-2 dark:text-white">
