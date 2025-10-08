@@ -36,7 +36,7 @@ model Team {
   teamOwnerUserId      Int?
   projectTeams         ProjectTeam[]
   user                 User[]
-}
+} 
 
 model Project {
   id           Int           @id @default(autoincrement())

@@ -42,7 +42,7 @@ const ProjectCard = ({ project, searchTerm }: Props) => {
             highlightText(project.description, searchTerm)
           ) : (
             <em>No description provided</em>
-          )}{" "}
+          )}
         </p>
 
         {/* Dates */}
@@ -52,7 +52,7 @@ const ProjectCard = ({ project, searchTerm }: Props) => {
               size={16}
               className="text-purple-500 dark:text-purple-300"
             />
-            <strong>Start:</strong>{" "}
+            <strong>Start:</strong>
             {project.startDate
               ? format(new Date(project.startDate), "P")
               : "Not set"}
@@ -62,7 +62,7 @@ const ProjectCard = ({ project, searchTerm }: Props) => {
               size={16}
               className="text-purple-500 dark:text-purple-300"
             />
-            <strong>Due:</strong>{" "}
+            <strong>Due:</strong>
             {project.dueDate
               ? format(new Date(project.dueDate), "P")
               : "Not set"}

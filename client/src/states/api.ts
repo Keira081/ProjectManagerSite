@@ -76,8 +76,7 @@ export interface Task {
 export interface Team {
   teamId: number;
   teamName: string;
-  productOwnerUserId?: number;
-  projectManagerUserId?: number;
+  teamOwnerUserId?: number;
 }
 
 export interface SearchResults {

@@ -25,7 +25,11 @@ import { useGetProjectsQuery, useGetTeamsQuery } from "@/states/api";
 import NewProjectModal from "../Modals/NewProjectModal";
 import Dropdown from "../DropdownMenu";
 
-const Sidebar = () => {
+interface SidebarProps {
+  setRedirectId: (id: number) => void;
+}
+
+const Sidebar = ({ setRedirectId }: SidebarProps) => {
   const { data: projects } = useGetProjectsQuery();
   const { data: teams } = useGetTeamsQuery();
   const dispatch = useAppDispatch();
@@ -75,7 +79,7 @@ const Sidebar = () => {
         onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
         className="absolute top-1/2 left-full -translate-y-1/2 -translate-x-[1px] w-4 h-9 flex items-center justify-center z-20 rounded-r-lg
         bg-gray-50 dark:bg-purple-400 shadow-[2px_0_3px_rgba(0,0,0,0.1)]
-        hover:bg-gray-100 dark:hover:bg-purple-200"
+        hover:bg-gray-100 dark:hover:bg-purple-200 cursor-pointer"
       >
         {isSidebarCollapsed ? (
           <ChevronRight className="h-5 w-5 text-purple-700 dark:text-white" />
@@ -97,7 +101,7 @@ const Sidebar = () => {
         </div>
 
         {/* SEARCH */}
-        <div className="flex items-center m-4 px-2 py-1 border border-purple-700 bg-white dark:bg-purple-100">
+        <div className="flex items-center m-4 px-2 py-1 border border-purple-700 bg-white dark:bg-purple-200">
           <input
             type="text"
             placeholder="Search..."
@@ -111,7 +115,7 @@ const Sidebar = () => {
 
         {/* MAIN */}
         <SidebarHeader title="MAIN" />
-        <div className="mx-5 flex flex-col gap-1">
+        <div className="mx-5 mb-2 flex flex-col gap-1">
           <NavLink title="User Settings" href="/settings" icon={Settings} />
           <NavLink
             title="Projects"
@@ -132,6 +136,10 @@ const Sidebar = () => {
           <NewProjectModal
             isOpen={isModalNewProjectOpen}
             onClose={() => setIsModalNewProjectOpen(false)}
+            onProjectCreated={(id) => {
+              setRedirectId(id);
+              setIsModalNewProjectOpen(false);
+            }}
           />
         </div>
 
@@ -153,12 +161,13 @@ const Sidebar = () => {
           />
         </div>
 
+        {/* COMING SOON */}
         {/* TEAMS */}
-        <SidebarHeader title="TEAMS" />
+        {/* <SidebarHeader title="TEAMS" />
         <div className="mx-5 flex flex-col gap-1">
           <NavLink title="Build Your Team" href="/buildTeam" icon={Users} />
 
-          {/* EXPANDABLE TEAMS LIST */}
+          {/* EXPANDABLE TEAMS LIST }
           <DropdownSection
             dispatch={dispatch}
             setIsCollapsed={setIsShowTeams}
@@ -173,7 +182,7 @@ const Sidebar = () => {
               />
             ))}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -214,7 +223,9 @@ const NavLink = ({ title, href, icon: Icon }: NavLinkProps) => {
               : "hover:bg-gray-200 dark:hover:bg-purple-300"
           } transition-colors`}
       >
-        {Icon && <Icon className="h-4 w-4 text-gray-700 dark:text-gray-100" />}
+        {Icon && (
+          <Icon className="h-4 w-4 mr-1 text-gray-700 dark:text-gray-100" />
+        )}
         <span className="text-gray-800 dark:text-white">{title}</span>
       </div>
     </Link>
@@ -231,7 +242,7 @@ interface ModalButtonProps {
 const ModalButton = ({ title, onClickCall, icon: Icon }: ModalButtonProps) => (
   <button
     onClick={onClickCall}
-    className="pl-4 flex items-center gap-2 p-1 rounded hover:bg-gray-200 dark:hover:bg-purple-300 transition-colors font-semibold text-gray-800 dark:text-white text-left"
+    className="pl-4 flex items-center cursor-pointer gap-2 p-1 rounded hover:bg-gray-200 dark:hover:bg-purple-300 transition-colors font-semibold text-gray-800 dark:text-white text-left"
   >
     {Icon && <Icon className="h-4 w-4 text-gray-700 dark:text-gray-100" />}
     <span>{title}</span>
@@ -257,7 +268,7 @@ const DropdownSection = ({
   <>
     <button
       onClick={() => dispatch(setIsCollapsed(!isCollapsed))}
-      className="flex justify-between items-center p-2 cursor-pointer text-purple-600 dark:text-purple-200 font-semibold rounded
+      className="flex justify-between items-center p-2 cursor-pointer text-purple-600 dark:text-purple-100 font-semibold rounded
               transition-colors"
     >
       <span>{title}</span>
@@ -273,11 +284,6 @@ const DropdownSection = ({
               ${isCollapsed ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
     >
       <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
-        {/* <ModalButton
-                title="+ Create a Group"
-                href="/createGroup"
-                onClickCall={() => setIsModalNewGroupOpen(true)}
-              /> */}
         {mapping}
       </div>
     </div>

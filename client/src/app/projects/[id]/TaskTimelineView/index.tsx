@@ -23,7 +23,7 @@ const TaskTimelineView = ({ projectId, setIsModalNewTaskOpen }: Props) => {
 
   return (
     <div className="px-4 xl:px-6">
-      <div className="flex flex-wrap items-center justify-between gap-2 py-5 dark:text-white">
+      <div className="flex flex-wrap items-center justify-between gap-2 py-5 dark:text-white w-full">
         <TimeLine
           dataType="task"
           dataSet={(tasks ?? []).map((task) => ({
@@ -34,7 +34,7 @@ const TaskTimelineView = ({ projectId, setIsModalNewTaskOpen }: Props) => {
           header="Project Tasks Timeline"
         />
 
-        <div className="flex w-full items-center px-4 pb-5 pt-1 shadow-2xl">
+        <div className="flex w-full items-center px-4 pb-5 pt-1">
           <button
             className="flex items-center rounded bg-purple-100 dark:bg-purple-200 px-1 py-1 mr-2 cursor-pointer  dark:text-white hover:bg-purple-200 dark:hover:bg-purple-400"
             onClick={() => setIsModalNewTaskOpen(true)}

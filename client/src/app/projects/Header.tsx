@@ -17,14 +17,14 @@ const TabsWrapper = styled.div<{ threshold: number }>`
   @media (min-width: ${(props) => props.threshold}px) {
     display: flex !important;
   }
-  display: none; /* hidden by default */
+  display: none;
 `;
 
 const DropdownWrapper = styled.div<{ threshold: number }>`
   @media (min-width: ${(props) => props.threshold}px) {
     display: none !important;
   }
-  display: flex; /* shown by default for smaller screens */
+  display: flex;
 `;
 
 const Header = ({
@@ -71,8 +71,8 @@ const Header = ({
   }, []);
 
   return (
-    <div className="flex items-end px-5 justify-between border-b border-purple-100 dark:border-purple-250 pb-2 gap-3">
-      {header}
+    <div className="flex items-end px-5 pb-2 justify-between border-b border-purple-100 dark:border-purple-250 gap-3">
+      <div>{header}</div>
 
       {/* TABS FOR LARGER SCREENS */}
       <TabsWrapper
@@ -85,7 +85,7 @@ const Header = ({
       {/* DROPDOWN FOR SMALLER SCREENS */}
       <DropdownWrapper
         threshold={threshold}
-        className="relative flex-1 justify-end flex-shrink-0"
+        className="relative flex-1 justify-end"
         ref={dropdownRef}
       >
         <button
@@ -93,9 +93,8 @@ const Header = ({
           className="flex items-center transform translate-y-1 text-purple-500 dark:text-white cursor-pointer hover:text-purple-250 dark:hover:text-purple-100 transition-colors duration-200"
         >
           Views
-          <EllipsisVertical className="pl-2 translate-y-0.5" />
+          <EllipsisVertical className="pl-2 translate-y-0.4" />
         </button>
-
         <div
           className={`translate-x-15 overflow-hidden transition-all duration-300 ease-in-out 
             origin-top-right absolute top-full mt-1 w-40 shadow-lg

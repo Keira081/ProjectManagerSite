@@ -207,11 +207,39 @@ const TaskColumn = ({
                 ${isMobile ? "flex gap-2 overflow-x-auto " : "flex flex-col gap-3 overflow-y-auto h-[400px]"}
               `}
       >
-        {columnTasks.map((task) => (
-          <Link href={`/tasks/${task.id}`}>
-            <Task key={task.id} task={task} />{" "}
-          </Link>
-        ))}
+        {columnTasks.length != 0 ? (
+          columnTasks.map((task) => (
+            <Link href={`/tasks/${task.id}`}>
+              <Task key={task.id} task={task} />
+            </Link>
+          ))
+        ) : (
+          <div
+            className="flex flex-col items-center justify-center
+              w-full h-full min-h-[250px]
+              text-center text-purple-400 dark:text-purple-500"
+          >
+            <button
+              onClick={() => {
+                setIsModalNewTaskOpen(true);
+                setImportedStatus(status);
+              }}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              className="flex items-center justify-center rounded cursor-pointer bg-purple-100 dark:bg-purple-200"
+            >
+              <Plus
+                size={80}
+                className="opacity-30 dark:opacity-40 hover:opacity-60 transition-opacity duration-200"
+              />
+            </button>
+
+            {/* Prompt text */}
+            <p className="mt-4 text-sm font-medium text-purple-500 dark:text-purple-400">
+              Click the plus icon to add a new task
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

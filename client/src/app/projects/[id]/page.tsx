@@ -8,17 +8,31 @@ import Table from "./TableView";
 import Description from "./DescriptionView";
 import NewTaskModal from "@/components/Modals/NewTaskModal";
 import TaskTimelineView from "./TaskTimelineView";
+import { useGetProjectByIdQuery } from "@/states/api";
+import ItemUnavailable from "@/components/ItemUnavailable";
 
 const Project = () => {
   const { id } = useParams();
   const projectId = Number(id);
 
-  const [activeTab, setActiveTab] = useState("Table");
+  const [activeTab, setActiveTab] = useState("Description");
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
   const [importedStatus, setImportedStatus] = useState("");
 
-  const [showLoading, setShowLoading] = useState(false); // <-- NEW
+  const {
+    data: project,
+    isLoading,
+    isError,
+    error,
+  } = useGetProjectByIdQuery({ id: projectId });
+
+  if (!project)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <ItemUnavailable item="Project" />
+      </div>
+    );
 
   return (
     <div className="pt-2">

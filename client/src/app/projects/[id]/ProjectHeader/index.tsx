@@ -37,10 +37,12 @@ const ProjectHeader = ({ projectId, activeTab, setActiveTab }: Props) => {
       setActiveTab={setActiveTab}
       tabOptions={tabOptions}
       otherComponent={
-        <div className="flex items-center gap-1 text-xs font-thin text-purple-300 dark:text-neutral-400">
-          <PencilLine className="h-4 w-4" />
-          <p>Created: {formattedCreationDate}</p>
-        </div>
+        <>
+          <PencilLine className="h-4 w-4 flex-shrink-0 text-purple-300 dark:text-neutral-400" />
+          <div className="flex text-xs font-thin text-purple-300 dark:text-neutral-400 ">
+            <span>Created: {formattedCreationDate}</span>
+          </div>
+        </>
       }
     />
   );
@@ -55,17 +57,15 @@ const ProjectStatus = ({ name, status }: ProjectStatusProps) => {
   const statusColorClass = statusColors[status as Status];
 
   return (
-    <div className="flex items-baseline gap-4">
-      <h1 className="text-4xl tracking-[.10em] font-medium text-purple-400 dark:text-white">
-        {name}
-      </h1>
-      <p
+    <h1 className="text-4xl font-medium text-purple-400 dark:text-white text-nowrap mr-4">
+      <span>{name} </span>
+      <span
         className="text-sm font-semibold"
         style={{ color: statusColorClass, filter: "drop-shadow(0 0 8px)" }}
       >
         {status}
-      </p>
-    </div>
+      </span>
+    </h1>
   );
 };
 

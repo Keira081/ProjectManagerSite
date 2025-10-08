@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { DisplayOption, Gantt, ViewMode } from "@rsagiev/gantt-task-react-19";
 import "@rsagiev/gantt-task-react-19/dist/index.css";
 import { useAppSelector } from "@/states/store";
-import { Check } from "lucide-react";
+import { Check, FileWarning } from "lucide-react";
+import ItemUnavailable from "../ItemUnavailable";
 
 type GanttItemType = "task" | "milestone" | "project";
 
@@ -89,7 +90,7 @@ const TimeLine = ({ dataSet, dataType, header }: Props) => {
 
         {/* VIEW MODE DROP DOWN */}
         <div className="relative inline-block" ref={dropdownRef}>
-          {/* BUTTON */}
+          {/* TIMELINE BUTTON */}
           <div
             className="flex justify-center rounded border border-gray-400 bg-white px-4 py-2 leading-tight 
                        hover:border-gray-500 cursor-pointer dark:bg-purple-300 dark:text-white"
@@ -98,7 +99,7 @@ const TimeLine = ({ dataSet, dataType, header }: Props) => {
             {displayOptions.viewMode}
           </div>
 
-          {/* MENU */}
+          {/* DROPDOWN */}
           <div
             className={`flex justify-start absolute left-0 w-full mt-1 shadow-lg bg-purple-600 
                        transition-all duration-200 origin-top z-10
@@ -124,18 +125,28 @@ const TimeLine = ({ dataSet, dataType, header }: Props) => {
         </div>
       </div>
 
-      <div className="overflow-hidden dark:text-white shadow">
-        <Gantt
-          tasks={ganttTasks}
-          {...displayOptions}
-          columnWidth={displayOptions.viewMode === ViewMode.Month ? 150 : 100}
-          listCellWidth="120px" // slightly wider for readability
-          projectBackgroundColor={isDarkMode ? "#f7bb53" : "#9C7FA3"}
-          projectBackgroundSelectedColor={isDarkMode ? "#3c303f" : "#f7bb53"}
-          barBackgroundColor={isDarkMode ? "#E0AF55" : "#9C7FA3"}
-          barBackgroundSelectedColor={isDarkMode ? "#3c303f" : "#827386"}
-        />
-      </div>
+      {ganttTasks.length != 0 ? (
+        <div className="overflow-hidden dark:text-white w-full">
+          <div className="border-1 p-2 w-full">
+            <Gantt
+              tasks={ganttTasks}
+              {...displayOptions}
+              columnWidth={
+                displayOptions.viewMode === ViewMode.Month ? 150 : 100
+              }
+              listCellWidth="120px"
+              projectBackgroundColor={isDarkMode ? "#f7bb53" : "#9C7FA3"}
+              projectBackgroundSelectedColor={
+                isDarkMode ? "#3c303f" : "#f7bb53"
+              }
+              barBackgroundColor={isDarkMode ? "#E0AF55" : "#9C7FA3"}
+              barBackgroundSelectedColor={isDarkMode ? "#3c303f" : "#827386"}
+            />
+          </div>
+        </div>
+      ) : (
+        <ItemUnavailable item="Tasks" promptNewItem={true} />
+      )}
     </>
   );
 };

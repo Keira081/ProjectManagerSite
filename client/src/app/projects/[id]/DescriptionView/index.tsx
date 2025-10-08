@@ -87,6 +87,7 @@ const Description = ({
       alert("Failed to delete project.");
     }
   };
+  //---
 
   if (!project)
     return (
@@ -95,11 +96,9 @@ const Description = ({
 
   return (
     <div className="pt-4 px-4 pb-4 bg-gray-100 dark:bg-purple-600 min-h-screen transition-colors duration-300">
-      {/* Layout Grid */}
-
-      {/* Top Info + Actions Bar */}
+      {/* INFO ITEMS +  BUTTONS */}
       <div className="p-4 rounded-xl bg-white dark:bg-purple-500 shadow-md flex flex-wrap items-center justify-between gap-4 mb-6">
-        {/* Info items (dates, etc) */}
+        {/* INFO ITEMS (dates, etc) */}
         <div className="flex flex-wrap items-center gap-6 text-gray-700 dark:text-gray-200">
           {project.startDate && (
             <div className="flex items-center gap-2 whitespace-nowrap">
@@ -127,16 +126,16 @@ const Description = ({
             <div className="flex items-center gap-2 whitespace-nowrap">
               <PauseCircle className="w-5 h-5 text-yellow-500" />
               <span>
-                Postponed:{" "}
+                Postponed:
                 {new Date(project.datePostponed).toLocaleDateString()}
               </span>
             </div>
           )}
         </div>
 
-        {/* Action Buttons */}
+        {/* ACTION BUTTONS */}
         <div className="flex gap-2 ml-auto">
-          {/* Edit Button */}
+          {/* EDIT BUTTON */}
           <button
             onClick={() => console.log("Edit clicked")}
             title="Edit Project"
@@ -145,7 +144,7 @@ const Description = ({
             <Pencil className="w-5 h-5 text-purple-500 dark:text-white" />
           </button>
 
-          {/* Delete Button */}
+          {/* DELETE BUTTON */}
           <button
             onClick={handleDeleteProject}
             title="Delete Project"
@@ -157,7 +156,7 @@ const Description = ({
       </div>
 
       <div className="flex flex-col min-[700px]:flex-row gap-6 mb-10">
-        {/* Left: Description */}
+        {/* LEFT: DESCRIPTION */}
         <div className="min-[700px]:w-1/3 p-4 rounded-xl bg-white dark:bg-purple-500 shadow-md flex-shrink-0">
           <div className="flex items-center gap-2 mb-2">
             <FileText className="w-5 h-5 text-purple-500 dark:text-purple-25" />
@@ -170,9 +169,8 @@ const Description = ({
           </p>
         </div>
 
-        {/* Right: Pie chart + Dates + Delete */}
+        {/* RIGHT: PIE CHART */}
         <div className="flex-1 flex flex-col gap-6">
-          {/* Pie Chart */}
           <div className="p-6 rounded-xl bg-white dark:bg-purple-500 shadow-md">
             <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-purple-500 dark:text-purple-25" />

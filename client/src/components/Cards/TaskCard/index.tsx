@@ -116,13 +116,13 @@ const TaskCard = ({ task, searchTerm }: Props) => {
         </div>
 
         {/* Dates */}
-        <div className="grid grid-cols-2 gap-3 mb-3 text-sm text-gray-600 dark:text-gray-300">
+        <div className="grid grid-cols-1 gap-4 mb-3 text-sm text-gray-600 dark:text-gray-300">
           <div>
-            <strong>Start:</strong>{" "}
+            <strong>Start: </strong>
             {task.startDate ? format(new Date(task.startDate), "P") : "Not set"}
           </div>
           <div>
-            <strong>Due:</strong>{" "}
+            <strong>Due: </strong>
             {task.dueDate ? format(new Date(task.dueDate), "P") : "Not set"}
           </div>
         </div>
@@ -130,11 +130,11 @@ const TaskCard = ({ task, searchTerm }: Props) => {
         {/* People */}
         <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
           <span>
-            <strong>Author:</strong>
+            <strong>Author: </strong>
             {author ? highlightText(author.username, searchTerm) : "Unknown"}
           </span>
           <span>
-            <strong>Assignee:</strong>{" "}
+            <strong>Assignee: </strong>
             {assignee
               ? highlightText(assignee.username, searchTerm)
               : "Unknown"}

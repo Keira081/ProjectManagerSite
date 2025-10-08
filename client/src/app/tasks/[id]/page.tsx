@@ -11,6 +11,7 @@ import {
 import { User, Pencil, Trash2, Plus, SendHorizontal } from "lucide-react";
 import { priorityBubbles, statusBubbles } from "@/styles/TagColors";
 import Link from "next/link";
+import ItemUnavailable from "@/components/ItemUnavailable";
 
 const TaskPage = () => {
   const { id } = useParams();
@@ -54,8 +55,8 @@ const TaskPage = () => {
 
   if (!task)
     return (
-      <div className="flex justify-center items-center h-screen text-gray-700">
-        Task not found.
+      <div className="flex justify-center items-center h-full">
+        <ItemUnavailable item="Task" />
       </div>
     );
 
@@ -115,19 +116,23 @@ const TaskPage = () => {
           {/* Travel to Project Button */}
           <Link
             href={`/projects/${task.projectId}`}
-            className="flex items-center gap-1 px-3 py-2 rounded bg-purple-500 text-white hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-500 transition-colors"
+            className="flex items-center ml-6 gap-1 px-3 py-2 rounded bg-purple-500 text-white hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-500 transition-colors"
           >
             <span>Travel to Project</span>
             <SendHorizontal className="w-4 h-4" />
           </Link>
         </div>
-        {/* Plus Button Placeholder */}
-        <button
-          title="Add attachment"
-          className="rounded p-1 bg-purple-100 dark:bg-purple-300 text-white cursor-pointer mb-6"
-        >
-          <Plus size={16} />
-        </button>
+
+        {/* Add attachment Button Placeholder */}
+        <div className="flex gap-2">
+          <p>Add attachment</p>
+          <button
+            onClick={() => alert("🚧 This feature is under construction!")}
+            className="rounded p-1 bg-purple-100 dark:bg-purple-300 hover:bg-purple-200 text-white cursor-pointer mb-6"
+          >
+            <Plus size={16} />
+          </button>
+        </div>
 
         {/* Description Section */}
         <div className="mb-6">
@@ -140,7 +145,16 @@ const TaskPage = () => {
         {/* Comments Section */}
         <div className="mb-6 relative">
           <h2 className="text-xl font-semibold mb-2">Comments</h2>
-          <div className="max-h-48 overflow-y-auto p-3 bg-white dark:bg-purple-700 rounded shadow space-y-4">
+          {/* Coming Soon Placeholder */}
+          <div className="flex flex-col items-center justify-center min-h-[25rem] flex-1 rounded-lg border border-dashed border-purple-300 bg-purple-50 dark:bg-purple-500 p-6 text-center shadow-sm">
+            <p className="text-lg font-medium text-purple-600 dark:text-purple-100 mb-1">
+              💬 Comments Coming Soon
+            </p>
+            <p className="text-sm text-purple-400 dark:text-purple-200 opacity-80">
+              Stay tuned — you'll soon be able to add and view comments here!
+            </p>
+          </div>
+          {/* <div className="max-h-48 overflow-y-auto p-3 bg-white dark:bg-purple-700 rounded shadow space-y-4">
             {task.comments && task.comments.length > 0 ? (
               task.comments.map((comment) => {
                 const user =
@@ -152,28 +166,28 @@ const TaskPage = () => {
 
                 return (
                   <div key={comment.id} className="flex items-start gap-3">
-                    {/* User Profile Picture */}
+                    {/* User Profile Picture 
                     <img
                       src={user?.profilePictureUrl || "/default-avatar.png"}
                       alt="user profile"
                       className="w-10 h-10 rounded-full object-cover mt-1"
                     />
 
-                    {/* Comment Box */}
+                    {/* Comment Box 
                     <div className="relative inline-block max-w-[70%] bg-gray-100 dark:bg-purple-600 rounded-lg p-3 shadow">
-                      {/* Date top-right */}
+                      {/* Date top-right 
                       <span className="absolute top-1 right-2 text-xs text-gray-500 dark:text-gray-300">
                         {new Date(comment.creationDate).toLocaleDateString(
                           "en-US"
                         )}
                       </span>
 
-                      {/* User Name */}
+                      {/* User Name 
                       <p className="font-semibold text-sm text-purple-700 dark:text-purple-200">
                         {user?.username || `User ${comment.userId}`}
                       </p>
 
-                      {/* Comment Text */}
+                      {/* Comment Text 
                       <p className="text-sm mt-1">{comment.text}</p>
                     </div>
                   </div>
@@ -184,13 +198,13 @@ const TaskPage = () => {
             )}
           </div>
 
-          {/* Floating Add Comment Button */}
+          {/* Floating Add Comment Button 
           <button
             title="Add Comment"
             className=" absolute bottom-2 opacity-75  cursor-pointer right-2 rounded-full bg-purple-500 text-white p-3 shadow-lg hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-500 transition-colors"
           >
             <Plus size={15} />
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -207,7 +221,7 @@ const TaskPage = () => {
         {/* Assignee */}
         <div className="mb-3">
           <User className="inline h-5 w-5 mr-2 text-purple-500 dark:text-purple-25" />
-          <strong>Assignee:</strong>{" "}
+          <strong>Assignee:</strong>
           {task.assignee ? task.assignee.username : "Unassigned"}
         </div>
 

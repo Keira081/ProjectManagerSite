@@ -6,7 +6,7 @@ import { CalendarDays, ChartNoAxesColumn, PencilLine } from "lucide-react";
 import Header from "../Header";
 import { useGetProjectsQuery } from "@/states/api";
 const tabOptions = [
-  { name: "Data", icon: <ChartNoAxesColumn className="h-5 w-5" /> },
+  //  { name: "Data", icon: <ChartNoAxesColumn className="h-5 w-5" /> },
   { name: "Timeline", icon: <CalendarDays className="h-5 w-5" /> },
 ];
 
